@@ -136,6 +136,27 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
+        $('.select-year').change(function() {
+            var year = $(this).find(':selected').val();
+            var movieId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('select-year') }}",
+                data: {
+                    year: year,
+                    id: movieId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Select year ${year} success`)
+                }
+            });
+
+        })
+    </script>
+    <script>
         $(function() {
             $(".order-position").sortable({
                 placeholder: 'ui-state-highlight',

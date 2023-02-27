@@ -123,15 +123,17 @@
                                         href="{{ route('categories', $category->slug) }}">{{ $category->title }}</a>
                                 </li>
                             @endforeach
-                            {{-- <li class="mega dropdown">
+                            <li class="mega dropdown">
                                 <a title="Năm" href="#" data-toggle="dropdown" class="dropdown-toggle"
                                     aria-haspopup="true">Năm <span class="caret"></span></a>
                                 <ul role="menu" class=" dropdown-menu">
-                                    <li><a title="Phim 2020" href="danhmuc.php">Phim 2020</a></li>
-                                    <li><a title="Năm 2019" href="danhmuc.php">Năm 2019</a></li>
-                                    <li><a title="Năm 2018" href="danhmuc.php">Năm 2018</a></li>
+                                    @for ($i = 2020; $i <= 2023; $i++)
+                                        <li><a title="Phim {{ $i }}" href="{{ url('year/' . $i) }}">Phim
+                                                {{ $i }}</a></li>
+                                    @endfor
+
                                 </ul>
-                            </li> --}}
+                            </li>
                             <li class="mega dropdown">
                                 <a title="Thể Loại" href="#" data-toggle="dropdown" class="dropdown-toggle"
                                     aria-haspopup="true">Thể Loại <span class="caret"></span></a>

@@ -22,7 +22,42 @@
                             {!! Form::text('title', isset($listMovieById) ? $listMovieById->title : null, [
                                 'class' => 'form-control',
                                 'placeholder' => 'Input title',
-                                'id' => 'title',
+                                'id' => 'slug',
+                                'onkeyup' => 'ChangeToSlug()',
+                            ]) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('slug', 'Slug', []) !!}
+                            {!! Form::text('slug', isset($listMovieById) ? $listMovieById->slug : null, [
+                                'class' => 'form-control',
+                                'placeholder' => 'Input slug',
+                                'id' => 'convert_slug',
+                            ]) !!}
+                        </div>
+
+                        <div class="form-group">
+                            {!! Form::label('originalTitle', 'Original Title', []) !!}
+                            {!! Form::text('original_title', isset($listMovieById) ? $listMovieById->original_title : null, [
+                                'class' => 'form-control',
+                                'placeholder' => 'Input original title',
+                                'id' => 'original_title',
+                            ]) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('duration', 'Duration', []) !!}
+                            {!! Form::text('duration', isset($listMovieById) ? $listMovieById->duration : null, [
+                                'class' => 'form-control',
+                                'placeholder' => 'Input duration',
+                                'id' => 'duration',
+                            ]) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('tags', 'Tag', []) !!}
+                            {!! Form::textarea('tags', isset($listMovieById) ? $listMovieById->description : null, [
+                                'style' => 'resize:none',
+                                'class' => 'form-control',
+                                'placeholder' => 'Input tags',
+                                'id' => 'tags',
                             ]) !!}
                         </div>
                         <div class="form-group">
@@ -55,6 +90,33 @@
                             ) !!}
                         </div>
                         <div class="form-group">
+                            {!! Form::label('subtitle', 'Subtitle', []) !!}
+                            {!! Form::select(
+                                'subtitle',
+                                ['1' => 'Thuyết minh', '0' => 'ViệtSub'],
+                                isset($listMovieById) ? $listMovieById->subtitle : null,
+                                [],
+                            ) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('resolution', 'Resolution', []) !!}
+                            {!! Form::select(
+                                'resolution',
+                                ['1' => 'HD', '0' => 'SD'],
+                                isset($listMovieById) ? $listMovieById->resolution : null,
+                                [],
+                            ) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('hot', 'Movie Hot', []) !!}
+                            {!! Form::select(
+                                'movie_hot',
+                                ['1' => 'Active', '0' => 'Inactive'],
+                                isset($listMovieById) ? $listMovieById->hot : null,
+                                [],
+                            ) !!}
+                        </div>
+                        <div class="form-group">
                             {!! Form::label('category', 'Category', []) !!}
                             {!! Form::select('category_id', $listCategories, isset($listMovieById) ? $listMovieById->category_id : null, []) !!}
                         </div>
@@ -82,21 +144,31 @@
                 <tr>
                     <th scope="col">STT</th>
                     <th scope="col">Title</th>
+                    <th scope="col">Original Title</th>
+                    <th scope="col">Duration</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Tag</th>
                     <th scope="col">Image</th>
                     <th scope="col">Category</th>
                     <th scope="col">Genre</th>
                     <th scope="col">Country</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Resolution</th>
+                    <th scope="col">Subtitle</th>
+                    <th scope="col">Hot</th>
+                    <th scope="col">Year</th>
                     <th scope="col">Manage</th>
                 </tr>
             </thead>
-            <tbody >
+            <tbody>
                 @foreach ($listMovies as $key => $movie)
                     <tr id="{{ $movie->id }}">
                         <td>{{ $key + 1 }}</td>
                         <td>{{ $movie->title }}</td>
+                        <td>{{ $movie->original_title }}</td>
+                        <td>{{ $movie->duration }}</td>
                         <td>{{ $movie->description }}</td>
+                        <td>{{ $movie->tags }}</td>
                         <td>
                             <img width="20%" src="{{ asset('uploads/movies/' . $movie->image) }}" />
                         </td>
@@ -115,6 +187,33 @@
                             @else
                                 Inactive
                             @endif
+                        </td>
+                        <td>
+                            @if ($movie->resolution == 0)
+                                SD
+                            @else
+                                HD
+                            @endif
+                        </td>
+                        <td>
+                            @if ($movie->subtitle == 0)
+                                Thuyết minh
+                            @else
+                                Việt Sub
+                            @endif
+                        </td>
+                        <td>
+                            @if ($movie->movie_hot == 1)
+                                Active
+                            @else
+                                Inactive
+                            @endif
+                        </td>
+                        <td>
+                            {!! Form::selectYear('year', 2000, 2023, isset($movie) ? $movie->year : '', [
+                                'class' => 'select-year',
+                                'id' => $movie->id,
+                            ]) !!}
                         </td>
                         <td>
                             {!! Form::open([
