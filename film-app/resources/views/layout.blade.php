@@ -65,16 +65,19 @@
                 <div class="col-md-5 col-sm-6 halim-search-form hidden-xs">
                     <div class="header-nav">
                         <div class="col-xs-12">
-                            <form id="search-form-pc" name="halimForm" role="search" action="" method="GET">
+                            <form id="search-form-pc" name="halimForm" role="search" action="{{ route('search') }}"
+                                method="GET">
                                 <div class="form-group">
                                     <div class="input-group col-xs-12">
-                                        <input id="search" type="text" name="s" class="form-control"
-                                            placeholder="Tìm kiếm..." autocomplete="off" required>
+                                        <input id="search" type="text" name="search" class="form-control"
+                                            placeholder="Tìm kiếm phim..." autocomplete="off" required>
                                         <i class="animate-spin hl-spin4 hidden"></i>
+                                        <button>Tìm kiếm</button>
                                     </div>
                                 </div>
                             </form>
-                            <ul class="ui-autocomplete ajax-results hidden"></ul>
+                            <ul class="list-group" id='search-result' style="display: none">
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -204,10 +207,51 @@
 
     <script type='text/javascript' src='{{ asset('frontend/js/halimtheme-core.min.js?ver=1626273138') }}'
         id='halim-init-js'></script>
+    <script>
+        $(document).ready(function() {
+            $('#search').keyup(function() {
+                $('#search-result').html('');
+                var search = $('#search').val();
+                if (search != '') {
+                    var expression = new RegExp(search, 'i');
+                    $.getJSON('/json/movie.json', function(data) {
+                        $.each(data, function(key, value) {
+                            if (value.title.search(expression) != -1 || value.description
+                                .search(expression) != -1) {
+                                $('#search-result').css('display', 'inherit');
+                                $('#search-result').append(
+                                    '<li style="cursor:pointer; display: flex; max-height: 200px;" class="list-group-item link-class"><img width="10px" height="10px" src="uploads/movies/' +
+                                    value.image +
+                                    '" width="100" class="" /><div style="flex-direction: column; margin-left: 2px;"><h4 width="100%">' +
+                                    value.title
+                                )
+                            }
+                        })
+                    })
+                } else {
+                    $('#search-result').css('display', 'none');
+                }
+            })
+            $('#search-result').on('click', 'li', function() {
+                var clickText = $(this).text().split('|');
+                $('#search').val($.trim(clickText[0]));
+                $('#search-result').html('');
+            })
+        })
+    </script>
 
-
-
-
+    <script>
+        $(".watch-trailer").click(function(e) {
+            e.preventDefault();
+            var aid = $(this).attr("href");
+            $('html,body').animate({
+                scrollTop: $(aid).offset().top
+            }, 'slow');
+        });
+    </script>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0"
+        nonce="JLHSHesM"></script>
     <style>
         #overlay_mb {
             position: fixed;

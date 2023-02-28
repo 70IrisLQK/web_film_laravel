@@ -22,7 +22,6 @@
         <main id="main-contents" class="col-xs-12 col-sm-12 col-md-8">
             <section id="content" class="test">
                 <div class="clearfix wrap-content">
-
                     <div class="halim-movie-wrapper">
                         <div class="title-block">
                             <div id="bookmark" class="bookmark-img-animation primary_ribbon" data-id="38424">
@@ -34,15 +33,19 @@
                         </div>
                         <div class="movie_info col-xs-12">
                             <div class="movie-poster col-md-3">
-                                <img class="movie-thumb"
-                                    src="https://images2-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&gadget=a&no_expand=1&refresh=604800&url=https://1.bp.blogspot.com/-fL7o9nefEPc/YOk_YIB6QRI/AAAAAAAAJn8/hahCLlgRq4AFc8O4YeKhpb5zncixXAF0wCLcBGAsYHQ/s320/images.jpg"
-                                    alt="GÓA PHỤ ĐEN">
-                                <div class="bwa-content">
-                                    <div class="loader"></div>
-                                    <a href="{{ route('watch') }}" class="bwac-btn">
-                                        <i class="fa fa-play"></i>
-                                    </a>
-                                </div>
+                                <img class="movie-thumb" src="{{ asset('uploads/movies/' . $listMovieBySlug->image) }}"
+                                    alt="{{ $listMovieBySlug->title }}">
+                                @if ($listMovieBySlug->resolution != 5)
+                                    <div class="bwa-content">
+                                        <div class="loader"></div>
+                                        <a href="{{ route('watch', [$listMovieBySlug->slug]) }}" class="bwac-btn">
+                                            <i class="fa fa-play"></i>
+                                        </a>
+                                    </div>
+                                @else
+                                    <a href="#watch-trailer" style="display:block;"
+                                        class="btn btn-primary watch-trailer">Xem Trailer</a>
+                                @endif
                             </div>
                             <div class="film-poster col-md-9">
                                 <h1 class="movie-title title-1"
@@ -57,9 +60,15 @@
                                     {{-- <li class="list-info-group-item"><span>Điểm IMDb</span> : <span
                                             class="imdb">7.2</span></li> --}}
                                     <li class="list-info-group-item"><span>Thời lượng</span> : 133 Phút</li>
-                                    <li class="list-info-group-item"><span>Thể loại</span> : <a
-                                            href="{{ route('categories', [$listMovieBySlug->category->slug]) }}"
-                                            rel="category tag">{{ $listMovieBySlug->category->title }}</a></li>
+                                    <li class="list-info-group-item"><span>Thể loại</span> :
+                                        @foreach ($listMovieBySlug->movieGenre as $item)
+                                            <a href="{{ route('genres', [$item->slug]) }}" rel="category tag">
+                                                {{ $item->title }}
+                                            </a>
+                                        @endforeach
+
+                                    </li>
+
 
                                     <li class="list-info-group-item"><span>Quốc gia</span> : <a
                                             href="{{ route('countries', [$listMovieBySlug->country->slug]) }}"
@@ -86,7 +95,9 @@
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div id="halim_trailer"></div>
+                    <div id="halim_trailer">
+
+                    </div>
                     <div class="clearfix"></div>
                     <div class="section-bar clearfix">
                         <h2 class="section-title"><span style="color:#ffed4d">Nội dung phim</span></h2>
@@ -98,6 +109,22 @@
                             </article>
                         </div>
                     </div>
+                    @if (isset($listMovieBySlug->trailer))
+                        <div class="section-bar clearfix">
+                            <h2 class="section-title"><span style="color:#ffed4d">Trailer phim</span></h2>
+                        </div>
+                        <div class="entry-content htmlwrap clearfix">
+                            <div class="video-item halim-entry-box">
+                                <article id="watch-trailer" class="item-content">
+                                    <iframe width="100%" height="315"
+                                        src="https://www.youtube.com/embed/{{ $listMovieBySlug->trailer }}"
+                                        title="YouTube video player" frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowfullscreen></iframe>
+                                </article>
+                            </div>
+                        </div>
+                    @endif
                     <div class="section-bar clearfix">
                         <h2 class="section-title"><span style="color:#ffed4d">Tags phim</span></h2>
                     </div>
@@ -117,6 +144,22 @@
                                     <a
                                         href="{{ url('tag/' . $listMovieBySlug->title) }}">{{ $listMovieBySlug->title }}</a>
                                 @endif
+                            </article>
+                        </div>
+                    </div>
+                    {{-- Comment --}}
+                    <div class="section-bar clearfix">
+                        <h2 class="section-title"><span style="color:#ffed4d">Bình luận</span></h2>
+                    </div>
+                    <div class="entry-content htmlwrap clearfix">
+                        <div class="video-item halim-entry-box">
+                            @php
+                                $currentUrl = Request::url();
+                            @endphp
+
+                            <article id="post-38424" class="item-content">
+                                <div class="fb-comments" data-href="{{ $currentUrl }}" data-width="100%"
+                                    data-numposts="5"></div>
                             </article>
                         </div>
                     </div>

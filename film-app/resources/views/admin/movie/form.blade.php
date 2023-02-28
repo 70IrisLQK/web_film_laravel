@@ -44,6 +44,14 @@
                             ]) !!}
                         </div>
                         <div class="form-group">
+                            {!! Form::label('trailer', 'Trailer', []) !!}
+                            {!! Form::text('trailer', isset($listMovieById) ? $listMovieById->trailer : null, [
+                                'class' => 'form-control',
+                                'placeholder' => 'Input trailer',
+                                'id' => 'trailer',
+                            ]) !!}
+                        </div>
+                        <div class="form-group">
                             {!! Form::label('duration', 'Duration', []) !!}
                             {!! Form::text('duration', isset($listMovieById) ? $listMovieById->duration : null, [
                                 'class' => 'form-control',
@@ -125,8 +133,21 @@
                             {!! Form::select('country_id', $listCountries, isset($listMovieById) ? $listMovieById->country_id : null, []) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('genre', 'Genre', []) !!}
-                            {!! Form::select('genre_id', $listGenres, isset($listMovieById) ? $listMovieById->genre_id : null, []) !!}
+                            {!! Form::label('genre', 'Genre', []) !!} <br />
+                            {{-- {!! Form::select('genre_id', $listGenres, isset($listMovieById) ? $listMovieById->genre_id : null, []) !!} --}}
+                            @foreach ($listGenres as $genre)
+                                @if (isset($listMovieById))
+                                    {!! Form::checkbox(
+                                        'genre[]',
+                                        $genre->id,
+                                        isset($listMovieGenre) && $listMovieGenre->contains($genre->id) ? true : false,
+                                    ) !!}
+                                    {!! Form::label('genre', $genre->title) !!}
+                                @else
+                                    {!! Form::checkbox('genre[]', $genre->id) !!}
+                                    {!! Form::label('genre', $genre->title) !!}
+                                @endif
+                            @endforeach
                         </div>
                         @if (!isset($listMovieById))
                             {!! Form::submit('Save Movie', ['class' => 'btn btn-success']) !!}
@@ -145,6 +166,7 @@
                     <th scope="col">STT</th>
                     <th scope="col">Title</th>
                     <th scope="col">Original Title</th>
+                    <th scope="col">Trailer</th>
                     <th scope="col">Duration</th>
                     <th scope="col">Description</th>
                     <th scope="col">Tag</th>
@@ -157,6 +179,7 @@
                     <th scope="col">Subtitle</th>
                     <th scope="col">Hot</th>
                     <th scope="col">Year</th>
+                    <th scope="col">Season</th>
                     <th scope="col">Manage</th>
                 </tr>
             </thead>
@@ -166,6 +189,7 @@
                         <td>{{ $key + 1 }}</td>
                         <td>{{ $movie->title }}</td>
                         <td>{{ $movie->original_title }}</td>
+                        <td>{{ $movie->trailer }}</td>
                         <td>{{ $movie->duration }}</td>
                         <td>{{ $movie->description }}</td>
                         <td>{{ $movie->tags }}</td>
@@ -176,7 +200,9 @@
                             {{ $movie->category->title }}
                         </td>
                         <td>
-                            {{ $movie->genre->title }}
+                            @foreach ($movie->movieGenre as $item)
+                                <span class="badge badge-dark">{{ $item->title }}</span>
+                            @endforeach
                         </td>
                         <td>
                             {{ $movie->country->title }}
@@ -212,6 +238,12 @@
                         <td>
                             {!! Form::selectYear('year', 2000, 2023, isset($movie) ? $movie->year : '', [
                                 'class' => 'select-year',
+                                'id' => $movie->id,
+                            ]) !!}
+                        </td>
+                        <td>
+                            {!! Form::selectYear('season', 1, 10, isset($movie) ? $movie->season : '', [
+                                'class' => 'select-season',
                                 'id' => $movie->id,
                             ]) !!}
                         </td>

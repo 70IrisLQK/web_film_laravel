@@ -27,10 +27,11 @@ Route::get('/genres/{slug}', [IndexController::class, 'genre'])->name('genres');
 Route::get('/episodes', [IndexController::class, 'episode'])->name('episodes');
 Route::get('/home', [IndexController::class, 'home'])->name('home');
 Route::get('/movies/{slug}', [IndexController::class, 'movie'])->name('movies');
-Route::get('/watch', [IndexController::class, 'watch'])->name('watch');
+Route::get('/watch/{slug}', [IndexController::class, 'watch'])->name('watch');
 
 Route::get('/year/{year}', [IndexController::class, 'year']);
 Route::get('/tag/{tag}', [IndexController::class, 'tag']);
+Route::get('/search', [IndexController::class, 'search'])->name('search');
 
 Auth::routes();
 
@@ -43,6 +44,8 @@ Route::post('resorting', [CategoryController::class, 'resorting'])->name('resort
 Route::resource('genre', GenreController::class);
 Route::resource('country', CountryController::class);
 Route::resource('episode', EpisodeController::class);
+Route::get('select-movie', [EpisodeController::class, 'selectMovie'])->name('select-movie');
 
 Route::resource('movie', MovieController::class);
 Route::post('movie/select-year', [MovieController::class, 'selectYear'])->name('select-year');
+Route::post('movie/select-season', [MovieController::class, 'selectSeason'])->name('select-season');

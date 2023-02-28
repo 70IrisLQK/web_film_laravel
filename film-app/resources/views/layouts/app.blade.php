@@ -157,6 +157,27 @@
         })
     </script>
     <script>
+        $('.select-season').change(function() {
+            var season = $(this).find(':selected').val();
+            var movieId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('select-season') }}",
+                data: {
+                    season: season,
+                    id: movieId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Select season ${season} success`)
+                }
+            });
+
+        })
+    </script>
+    <script>
         $(function() {
             $(".order-position").sortable({
                 placeholder: 'ui-state-highlight',
@@ -183,6 +204,23 @@
             });
         });
     </script>
+
+    <script>
+        $('.select-movie').change(function() {
+            var id = $(this).find(':selected').val();
+            $.ajax({
+                url: "{{ route('select-movie') }}",
+                data: {
+                    movieId: id
+                },
+                type: 'GET',
+                success: function(data) {
+                    $('#show-movie').html(data);
+                }
+            });
+        })
+    </script>
+
 </body>
 
 </html>
