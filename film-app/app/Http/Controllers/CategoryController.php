@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -14,7 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $listCategories  = Category::orderBy('id', 'DESC')->orderBy('created_at', 'DESC')->paginate(10);
+        return view('admin.category.index', compact('listCategories'));
     }
 
     /**
@@ -24,8 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $listCategories  = Category::all();
-        return view('admin.category.form', compact('listCategories'));
+        return view('admin.category.form');
     }
 
     /**
@@ -42,6 +43,8 @@ class CategoryController extends Controller
         $newCategory->slug = $data['slug'];
         $newCategory->description = $data['description'];
         $newCategory->status = $data['status'];
+        $newCategory->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $newCategory->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $newCategory->save();
         return redirect()->back();
@@ -67,8 +70,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $listCategoryById = Category::find($id);
-        $listCategories = Category::all();
-        return view('admin.category.form', compact('listCategories', 'listCategoryById'));
+        return view('admin.category.form', compact('listCategoryById'));
     }
 
     /**
@@ -86,6 +88,7 @@ class CategoryController extends Controller
         $updateCategory->slug = $data['slug'];
         $updateCategory->description = $data['description'];
         $updateCategory->status = $data['status'];
+        $updateCategory->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $updateCategory->save();
         return redirect()->back();

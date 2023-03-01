@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\EpisodeController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Auth;
@@ -35,17 +36,24 @@ Route::get('/search', [IndexController::class, 'search'])->name('search');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Admin Route
 Route::resource('category', CategoryController::class);
 Route::post('resorting', [CategoryController::class, 'resorting'])->name('resorting');
+Route::get('category/delete/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
 Route::resource('genre', GenreController::class);
+Route::get('genre/delete/{id}', [GenreController::class, 'destroy'])->name('genre.destroy');
+
 Route::resource('country', CountryController::class);
+Route::get('country/delete/{id}', [CountryController::class, 'destroy'])->name('country.destroy');
+
+
 Route::resource('episode', EpisodeController::class);
 Route::get('select-movie', [EpisodeController::class, 'selectMovie'])->name('select-movie');
 
 Route::resource('movie', MovieController::class);
 Route::post('movie/select-year', [MovieController::class, 'selectYear'])->name('select-year');
 Route::post('movie/select-season', [MovieController::class, 'selectSeason'])->name('select-season');
+Route::get('movie/delete/{id}', [MovieController::class, 'destroy'])->name('movie.destroy');

@@ -1,105 +1,65 @@
-@extends('layouts.app')
-
+@extends('layouts.admin_layout')
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">Category Management</div>
+    <section class="wrapper">
+        <div class="col-lg-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    @if (isset($listCategoryById))
+                        Update Category
+                    @else
+                        Create Category
+                    @endif
+                </header>
+                <div class="panel-body">
+                    <div class="position-center">
 
-                    <div class="card-body">
-                        @if (!isset($listCategoryById))
-                            {!! Form::open(['method' => 'POST', 'route' => 'category.store']) !!}
-                        @else
-                            {!! Form::open(['method' => 'PUT', 'route' => ['category.update', $listCategoryById->id]]) !!}
+                        @if (isset($listCategoryById))
+                            <form method="POST" action="{{ route('category.update', [$listCategoryById->id]) }}">
+                                @method('PUT')
+                            @else
+                                <form method="POST" action="{{ route('category.store') }}">
                         @endif
+
+                        @csrf
                         <div class="form-group">
-                            {!! Form::label('title', 'Title', []) !!}
-                            {!! Form::text('title', isset($listCategoryById) ? $listCategoryById->title : null, [
-                                'class' => 'form-control',
-                                'placeholder' => 'Input title',
-                                'id' => 'slug',
-                                'onkeyup' => 'ChangeToSlug()',
-                            ]) !!}
+                            <label for="exampleInputPassword1">Title</label>
+                            <input type="text" class="form-control" id="slug" placeholder="Enter Title"
+                                onkeyup="ChangeToSlug()" name="title"
+                                value="{{ isset($listCategoryById) ? $listCategoryById->title : '' }}">
                         </div>
                         <div class="form-group">
-                            {!! Form::label('slug', 'Slug', []) !!}
-                            {!! Form::text('slug', isset($listCategoryById) ? $listCategoryById->slug : null, [
-                                'class' => 'form-control',
-                                'placeholder' => 'Input slug',
-                                'id' => 'convert_slug',
-                            ]) !!}
+                            <label for="exampleInputPassword1">Slug</label>
+                            <input type="text" class="form-control" placeholder="Slug" id="convert_slug" name="slug"
+                                value="{{ isset($listCategoryById) ? $listCategoryById->slug : '' }}">
                         </div>
                         <div class="form-group">
-                            {!! Form::label('description', 'Description', []) !!}
-                            {!! Form::textarea('description', isset($listCategoryById) ? $listCategoryById->description : null, [
-                                'style' => 'resize:none',
-                                'class' => 'form-control',
-                                'placeholder' => 'Input description',
-                                'id' => 'description',
-                            ]) !!}
+                            <label for="exampleInputPassword1">Description</label>
+                            <input type="text" class="form-control" placeholder="Description" name="description"
+                                value="{{ isset($listCategoryById) ? $listCategoryById->description : '' }}">
                         </div>
                         <div class="form-group">
-                            {!! Form::label('status', 'Status', []) !!}
-                            {!! Form::select(
-                                'status',
-                                ['1' => 'Active', '0' => 'Inactive'],
-                                isset($listCategoryById) ? $listCategoryById->status : null,
-                                [],
-                            ) !!}
-                        </div>
-                        @if (!isset($listCategoryById))
-                            {!! Form::submit('Save Category', ['class' => 'btn btn-success']) !!}
-                        @else
-                            {!! Form::submit('Update Category', ['class' => 'btn btn-success']) !!}
-                        @endif
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-            </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">STT</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Slug</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Manage</th>
-                    </tr>
-                </thead>
-                <tbody class="order-position">
-                    @foreach ($listCategories as $key => $category)
-                        <tr id={{ $category->id }}>
-                            <th scope="row">{{ $key + 1 }}</th>
-                            <td>{{ $category->title }}</td>
-                            <td>{{ $category->slug }}</td>
-                            <td>{{ $category->description }}</td>
-                            <td>
-                                @if ($category->status == 1)
-                                    Active
+                            <label for="exampleInputPassword1">Status</label>
+                            <select class="form-control" aria-label="Default select example" name="status">
+                                @if (isset($listCategoryById))
+                                    @if ($listCategoryById->status == 0)
+                                        <option value="0" selected>Inactive</option>
+                                        <option value="1">Active</option>
+                                    @else
+                                        <option value="0">Inactive</option>
+                                        <option value="1" selected>Active</option>
+                                    @endif
                                 @else
-                                    Inactive
+                                    <option value="0" selected>Inactive</option>
+                                    <option value="1">Active</option>
                                 @endif
-                            </td>
-                            <td>
-                                {!! Form::open([
-                                    'method' => 'DELETE',
-                                    'route' => ['category.destroy', $category->id],
-                                    'onsubmit' => 'return confirm("Do you want to delete?")',
-                                ]) !!}
-                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                                {!! Form::close() !!}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                        </form>
+                    </div>
 
-                                <a href="{{ route('category.edit', $category->id) }}" class="btn btn-warning">
-                                    Edit
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
-
-                </tbody>
-            </table>
+                </div>
+            </section>
         </div>
-    </div>
+    </section>
 @endsection

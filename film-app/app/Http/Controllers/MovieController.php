@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use File;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File as FacadesFile;
 
 class MovieController extends Controller
@@ -23,7 +24,21 @@ class MovieController extends Controller
      */
     public function index()
     {
-        //
+        $listMovies = Movie::with('category', 'movieGenre', 'country', 'genre')
+            ->orderBy('id', 'DESC')
+            ->orderBy('created_at', "DESC")
+            ->paginate(10);
+
+        $destinationPath = public_path() . "/json/";
+        if (!is_dir($destinationPath)) {
+            mkdir($destinationPath, 0777, true);
+        }
+
+        FacadesFile::put($destinationPath . 'movie.json', json_encode($listMovies));
+
+        return view('admin.movie.index', compact(
+            'listMovies',
+        ));
     }
 
     /**
@@ -42,17 +57,15 @@ class MovieController extends Controller
 
         FacadesFile::put($destinationPath . 'movie.json', json_encode($listMovies));
 
+        $listGenres = Genre::orderBy('id', 'DESC')->orderBy('created_at', 'DESC')->get();
+        $listCategories = Category::orderBy('id', 'DESC')->orderBy('created_at', 'DESC')->get();
+        $listCountries = Country::orderBy('id', 'DESC')->orderBy('created_at', 'DESC')->get();
 
-        $listGenre = Genre::pluck('title', 'id');
-        $listGenres = Genre::all();
-        $listCountries = Country::pluck('title', 'id');
-        $listCategories = Category::pluck('title', 'id');
         return view('admin.movie.form', compact(
             'listMovies',
             'listGenres',
             'listCountries',
-            'listCategories',
-            'listGenre'
+            'listCategories'
         ));
     }
 
@@ -124,13 +137,13 @@ class MovieController extends Controller
     public function edit($id)
     {
         $listMovies = Movie::all();
-        $listGenres = Genre::pluck('title', 'id');
-        $listCountries = Country::pluck('title', 'id');
-        $listCategories = Category::pluck('title', 'id');
 
-        $listMovieById = Movie::find($id);
+        $listMovieById = Movie::with('country', 'category')->find($id);
         $listMovieGenre = $listMovieById->movieGenre;
-        $listGenres = Genre::all();
+
+        $listGenres = Genre::orderBy('id', 'DESC')->orderBy('created_at', 'DESC')->get();
+        $listCategories = Category::orderBy('id', 'DESC')->orderBy('created_at', 'DESC')->get();
+        $listCountries = Country::orderBy('id', 'DESC')->orderBy('created_at', 'DESC')->get();
 
         return view('admin.movie.form', compact(
             'listMovies',
@@ -213,7 +226,6 @@ class MovieController extends Controller
     public function selectYear(Request $request)
     {
         $data = $request->all();
-
         $findMovieById = Movie::find($data['id']);
         $findMovieById->year = $data['year'];
         $findMovieById->save();

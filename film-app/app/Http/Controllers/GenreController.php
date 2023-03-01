@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Genre;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class GenreController extends Controller
@@ -14,7 +15,8 @@ class GenreController extends Controller
      */
     public function index()
     {
-        //
+        $listGenres  = Genre::orderBy('id', 'DESC')->orderBy('created_at', 'DESC')->paginate(10);
+        return view('admin.genre.index', compact('listGenres'));
     }
 
     /**
@@ -24,8 +26,7 @@ class GenreController extends Controller
      */
     public function create()
     {
-        $listGenres = Genre::all();
-        return view('admin.genre.form', compact('listGenres'));
+        return view('admin.genre.form');
     }
 
     /**
@@ -42,6 +43,8 @@ class GenreController extends Controller
         $newGenre->slug = $data['slug'];
         $newGenre->description = $data['description'];
         $newGenre->status = $data['status'];
+        $newGenre->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $newGenre->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $newGenre->save();
         return redirect()->back();
@@ -66,9 +69,8 @@ class GenreController extends Controller
      */
     public function edit($id)
     {
-        $listGenres = Genre::all();
         $listGenreById = Genre::find($id);
-        return view('admin.genre.form', compact('listGenres', 'listGenreById'));
+        return view('admin.genre.form', compact('listGenreById'));
     }
 
     /**
@@ -86,6 +88,7 @@ class GenreController extends Controller
         $updateGenre->slug = $data['slug'];
         $updateGenre->description = $data['description'];
         $updateGenre->status = $data['status'];
+        $updateGenre->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $updateGenre->save();
         return redirect()->back();

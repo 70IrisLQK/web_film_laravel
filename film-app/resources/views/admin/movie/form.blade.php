@@ -1,140 +1,170 @@
-@extends('layouts.app')
-
+@extends('layouts.admin_layout')
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">Movie Management</div>
+    <section class="wrapper">
+        <div class="col-lg-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    @if (isset($listMovieById))
+                        Update Movie
+                    @else
+                        Create Movie
+                    @endif
+                </header>
+                <div class="panel-body">
+                    <div class="position-center">
 
-                    <div class="card-body">
-                        @if (!isset($listMovieById))
-                            {!! Form::open(['method' => 'POST', 'route' => 'movie.store', 'enctype' => 'multipart/form-data']) !!}
-                        @else
-                            {!! Form::open([
-                                'method' => 'PUT',
-                                'route' => ['movie.update', $listMovieById->id],
-                                'enctype' => 'multipart/form-data',
-                            ]) !!}
+                        @if (isset($listMovieById))
+                            <form method="POST" action="{{ route('movie.update', [$listMovieById->id]) }}"
+                                enctype="multipart/form-data">
+                                @method('PUT')
+                            @else
+                                <form method="POST" action="{{ route('movie.store') }}" enctype="multipart/form-data">
                         @endif
+
+                        @csrf
                         <div class="form-group">
-                            {!! Form::label('title', 'Title', []) !!}
-                            {!! Form::text('title', isset($listMovieById) ? $listMovieById->title : null, [
-                                'class' => 'form-control',
-                                'placeholder' => 'Input title',
-                                'id' => 'slug',
-                                'onkeyup' => 'ChangeToSlug()',
-                            ]) !!}
+                            <label for="exampleInputPassword1">Title</label>
+                            <input type="text" class="form-control" id="slug" placeholder="Enter Title"
+                                onkeyup="ChangeToSlug()" name="title"
+                                value="{{ isset($listMovieById) ? $listMovieById->title : '' }}">
                         </div>
                         <div class="form-group">
-                            {!! Form::label('slug', 'Slug', []) !!}
-                            {!! Form::text('slug', isset($listMovieById) ? $listMovieById->slug : null, [
-                                'class' => 'form-control',
-                                'placeholder' => 'Input slug',
-                                'id' => 'convert_slug',
-                            ]) !!}
+                            <label for="exampleInputPassword1">Slug</label>
+                            <input type="text" class="form-control" placeholder="Slug" id="convert_slug" name="slug"
+                                value="{{ isset($listMovieById) ? $listMovieById->slug : '' }}">
                         </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Original Title</label>
+                            <input type="text" class="form-control" name="original_title"
+                                value="{{ isset($listMovieById) ? $listMovieById->original_title : '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Trailer</label>
+                            <input type="text" class="form-control" name="trailer"
+                                value="{{ isset($listMovieById) ? $listMovieById->trailer : '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Duration</label>
+                            <input type="text" class="form-control" name="duration"
+                                value="{{ isset($listMovieById) ? $listMovieById->duration : '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Tag</label>
+                            <textarea type="text" class="form-control" name="tags"
+                                value="{{ isset($listMovieById) ? $listMovieById->tags : '' }}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Description</label>
+                            <textarea type="text" class="form-control" name="description"
+                                value="{{ isset($listMovieById) ? $listMovieById->description : '' }}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">File input</label>
+                            <input type="file" name="image">
+                        </div>
+                        @if (isset($listMovieById))
+                            <img width="15%" src="{{ asset('uploads/movies/' . $listMovieById->image) }}" />
+                        @endif
 
                         <div class="form-group">
-                            {!! Form::label('originalTitle', 'Original Title', []) !!}
-                            {!! Form::text('original_title', isset($listMovieById) ? $listMovieById->original_title : null, [
-                                'class' => 'form-control',
-                                'placeholder' => 'Input original title',
-                                'id' => 'original_title',
-                            ]) !!}
+                            <label for="exampleInputPassword1">Status</label>
+                            <select class="form-control" aria-label="Default select example" name="status">
+                                @if (isset($listMovieById))
+                                    @if ($listMovieById->status == 0)
+                                        <option value="0" selected>Inactive</option>
+                                        <option value="1">Active</option>
+                                    @else
+                                        <option value="0">Inactive</option>
+                                        <option value="1" selected>Active</option>
+                                    @endif
+                                @else
+                                    <option value="0" selected>Inactive</option>
+                                    <option value="1">Active</option>
+                                @endif
+                            </select>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('trailer', 'Trailer', []) !!}
-                            {!! Form::text('trailer', isset($listMovieById) ? $listMovieById->trailer : null, [
-                                'class' => 'form-control',
-                                'placeholder' => 'Input trailer',
-                                'id' => 'trailer',
-                            ]) !!}
+                            <label for="exampleInputPassword1">Resolution</label>
+                            <select class="form-control" aria-label="Default select example" name="resolution">
+                                @if (isset($listMovieById))
+                                    @if ($listMovieById->resolution == 0)
+                                        <option value="0" selected>FULL HD</option>
+                                        <option value="1">HD</option>
+                                    @else
+                                        <option value="0">FULL HD</option>
+                                        <option value="1" selected>HD</option>
+                                    @endif
+                                @else
+                                    <option value="0" selected>FULL HD</option>
+                                    <option value="1">HD</option>
+                                @endif
+                            </select>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('duration', 'Duration', []) !!}
-                            {!! Form::text('duration', isset($listMovieById) ? $listMovieById->duration : null, [
-                                'class' => 'form-control',
-                                'placeholder' => 'Input duration',
-                                'id' => 'duration',
-                            ]) !!}
+                            <label for="exampleInputPassword1">SubTitle</label>
+                            <select class="form-control" aria-label="Default select example" name="subtitle">
+                                @if (isset($listMovieById))
+                                    @if ($listMovieById->status == 0)
+                                        <option value="0" selected>Thuyết Minh</option>
+                                        <option value="1">ViệtSub</option>
+                                    @else
+                                        <option value="0">Thuyết Minh</option>
+                                        <option value="1" selected>ViệtSub</option>
+                                    @endif
+                                @else
+                                    <option value="0" selected>Thuyết Minh</option>
+                                    <option value="1">ViệtSub</option>
+                                @endif
+                            </select>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('tags', 'Tag', []) !!}
-                            {!! Form::textarea('tags', isset($listMovieById) ? $listMovieById->description : null, [
-                                'style' => 'resize:none',
-                                'class' => 'form-control',
-                                'placeholder' => 'Input tags',
-                                'id' => 'tags',
-                            ]) !!}
+                            <label for="exampleInputPassword1">Movie Hot</label>
+                            <select class="form-control" aria-label="Default select example" name="movie_hot">
+                                @if (isset($listMovieById))
+                                    @if ($listMovieById->status == 0)
+                                        <option value="0" selected>Inactive</option>
+                                        <option value="1">Active</option>
+                                    @else
+                                        <option value="0">Inactive</option>
+                                        <option value="1" selected>Active</option>
+                                    @endif
+                                @else
+                                    <option value="0" selected>Inactive</option>
+                                    <option value="1">Active</option>
+                                @endif
+                            </select>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('description', 'Description', []) !!}
-                            {!! Form::textarea('description', isset($listMovieById) ? $listMovieById->description : null, [
-                                'style' => 'resize:none',
-                                'class' => 'form-control',
-                                'placeholder' => 'Input description',
-                                'id' => 'description',
-                            ]) !!}
+                            <label for="exampleInputPassword1">Category</label>
+                            <select class="form-control" aria-label="Default select example" name="category_id">
+                                @if (isset($listMovieById))
+                                    <option selected value="{{ $listMovieById->category->id }}">
+                                        {{ $listMovieById->category->title }}</option>
+                                @else
+                                    <option selected>Choose Category</option>
+                                @endif
+                                @foreach ($listCategories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('image', 'Image', []) !!}
-                            {!! Form::file('image', [
-                                'class' => 'form-control',
-                                'id' => 'image',
-                            ]) !!}
-                            @if (isset($listMovieById))
-                                <img width="15%" src="{{ asset('uploads/movies/' . $listMovieById->image) }}" />
-                            @endif
-
+                            <label for="exampleInputPassword1">Country</label>
+                            <select class="form-control" aria-label="Default select example" name="country_id"
+                                value="">
+                                @if (isset($listMovieById))
+                                    <option selected value="{{ $listMovieById->country->id }}">
+                                        {{ $listMovieById->country->title }}</option>
+                                @else
+                                    <option selected>Choose Country</option>
+                                @endif
+                                @foreach ($listCountries as $country)
+                                    <option value="{{ $country->id }}">{{ $country->title }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="form-group">
-                            {!! Form::label('status', 'Status', []) !!}
-                            {!! Form::select(
-                                'status',
-                                ['1' => 'Active', '0' => 'Inactive'],
-                                isset($listMovieById) ? $listMovieById->status : null,
-                                [],
-                            ) !!}
-                        </div>
-                        <div class="form-group">
-                            {!! Form::label('subtitle', 'Subtitle', []) !!}
-                            {!! Form::select(
-                                'subtitle',
-                                ['1' => 'Thuyết minh', '0' => 'ViệtSub'],
-                                isset($listMovieById) ? $listMovieById->subtitle : null,
-                                [],
-                            ) !!}
-                        </div>
-                        <div class="form-group">
-                            {!! Form::label('resolution', 'Resolution', []) !!}
-                            {!! Form::select(
-                                'resolution',
-                                ['1' => 'HD', '0' => 'SD'],
-                                isset($listMovieById) ? $listMovieById->resolution : null,
-                                [],
-                            ) !!}
-                        </div>
-                        <div class="form-group">
-                            {!! Form::label('hot', 'Movie Hot', []) !!}
-                            {!! Form::select(
-                                'movie_hot',
-                                ['1' => 'Active', '0' => 'Inactive'],
-                                isset($listMovieById) ? $listMovieById->hot : null,
-                                [],
-                            ) !!}
-                        </div>
-                        <div class="form-group">
-                            {!! Form::label('category', 'Category', []) !!}
-                            {!! Form::select('category_id', $listCategories, isset($listMovieById) ? $listMovieById->category_id : null, []) !!}
-                        </div>
-                        <div class="form-group">
-                            {!! Form::label('country', 'Movie', []) !!}
-                            {!! Form::select('country_id', $listCountries, isset($listMovieById) ? $listMovieById->country_id : null, []) !!}
-                        </div>
-                        <div class="form-group">
-                            {!! Form::label('genre', 'Genre', []) !!} <br />
-                            {{-- {!! Form::select('genre_id', $listGenres, isset($listMovieById) ? $listMovieById->genre_id : null, []) !!} --}}
+                        <label for="exampleInputPassword1">Genre</label>
+                        <div class="form-check form-check-inline">
                             @foreach ($listGenres as $genre)
                                 @if (isset($listMovieById))
                                     {!! Form::checkbox(
@@ -142,128 +172,20 @@
                                         $genre->id,
                                         isset($listMovieGenre) && $listMovieGenre->contains($genre->id) ? true : false,
                                     ) !!}
-                                    {!! Form::label('genre', $genre->title) !!}
+                                    <label class="badge badge-light" for="inlineCheckbox1">{{ $genre->title }}</label>
                                 @else
-                                    {!! Form::checkbox('genre[]', $genre->id) !!}
-                                    {!! Form::label('genre', $genre->title) !!}
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                                        value="{{ $genre->id }}" name="genre[]">
+                                    <label class="badge badge-light" for="inlineCheckbox1">{{ $genre->title }}</label>
                                 @endif
                             @endforeach
                         </div>
-                        @if (!isset($listMovieById))
-                            {!! Form::submit('Save Movie', ['class' => 'btn btn-success']) !!}
-                        @else
-                            {!! Form::submit('Update Movie', ['class' => 'btn btn-success']) !!}
-                        @endif
-                        {!! Form::close() !!}
+                        <button type="submit" class="btn btn-info">Submit</button>
+                        </form>
                     </div>
+
                 </div>
-            </div>
-
+            </section>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Original Title</th>
-                    <th scope="col">Trailer</th>
-                    <th scope="col">Duration</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Tag</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Genre</th>
-                    <th scope="col">Country</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Resolution</th>
-                    <th scope="col">Subtitle</th>
-                    <th scope="col">Hot</th>
-                    <th scope="col">Year</th>
-                    <th scope="col">Season</th>
-                    <th scope="col">Manage</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($listMovies as $key => $movie)
-                    <tr id="{{ $movie->id }}">
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $movie->title }}</td>
-                        <td>{{ $movie->original_title }}</td>
-                        <td>{{ $movie->trailer }}</td>
-                        <td>{{ $movie->duration }}</td>
-                        <td>{{ $movie->description }}</td>
-                        <td>{{ $movie->tags }}</td>
-                        <td>
-                            <img width="20%" src="{{ asset('uploads/movies/' . $movie->image) }}" />
-                        </td>
-                        <td>
-                            {{ $movie->category->title }}
-                        </td>
-                        <td>
-                            @foreach ($movie->movieGenre as $item)
-                                <span class="badge badge-dark">{{ $item->title }}</span>
-                            @endforeach
-                        </td>
-                        <td>
-                            {{ $movie->country->title }}
-                        </td>
-                        <td>
-                            @if ($movie->status == 1)
-                                Active
-                            @else
-                                Inactive
-                            @endif
-                        </td>
-                        <td>
-                            @if ($movie->resolution == 0)
-                                SD
-                            @else
-                                HD
-                            @endif
-                        </td>
-                        <td>
-                            @if ($movie->subtitle == 0)
-                                Thuyết minh
-                            @else
-                                Việt Sub
-                            @endif
-                        </td>
-                        <td>
-                            @if ($movie->movie_hot == 1)
-                                Active
-                            @else
-                                Inactive
-                            @endif
-                        </td>
-                        <td>
-                            {!! Form::selectYear('year', 2000, 2023, isset($movie) ? $movie->year : '', [
-                                'class' => 'select-year',
-                                'id' => $movie->id,
-                            ]) !!}
-                        </td>
-                        <td>
-                            {!! Form::selectYear('season', 1, 10, isset($movie) ? $movie->season : '', [
-                                'class' => 'select-season',
-                                'id' => $movie->id,
-                            ]) !!}
-                        </td>
-                        <td>
-                            {!! Form::open([
-                                'method' => 'DELETE',
-                                'route' => ['movie.destroy', $movie->id],
-                                'onsubmit' => 'return confirm("Do you want to delete?")',
-                            ]) !!}
-                            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                            {!! Form::close() !!}
-
-                            <a href="{{ route('movie.edit', $movie->id) }}" class="btn btn-warning">
-                                Edit
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-
-            </tbody>
-        </table>
-    </div>
+    </section>
 @endsection

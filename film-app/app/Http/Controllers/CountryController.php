@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CountryController extends Controller
@@ -14,7 +15,8 @@ class CountryController extends Controller
      */
     public function index()
     {
-        //
+        $listCountries  = Country::orderBy('id', 'DESC')->orderBy('created_at', 'DESC')->paginate(10);
+        return view('admin.country.index', compact('listCountries'));
     }
 
     /**
@@ -24,8 +26,7 @@ class CountryController extends Controller
      */
     public function create()
     {
-        $listCountries = Country::all();
-        return view('admin.country.form', compact('listCountries'));
+        return view('admin.country.form');
     }
 
     /**
@@ -42,6 +43,8 @@ class CountryController extends Controller
         $newCountry->slug = $data['slug'];
         $newCountry->description = $data['description'];
         $newCountry->status = $data['status'];
+        $newCountry->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+        $newCountry->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $newCountry->save();
         return redirect()->back();
@@ -66,9 +69,8 @@ class CountryController extends Controller
      */
     public function edit($id)
     {
-        $listCountries = Country::all();
         $listCountryById = Country::find($id);
-        return view('admin.country.form', compact('listCountries', 'listCountryById'));
+        return view('admin.country.form', compact('listCountryById'));
     }
 
     /**
@@ -86,6 +88,7 @@ class CountryController extends Controller
         $updateCountry->slug = $data['slug'];
         $updateCountry->description = $data['description'];
         $updateCountry->status = $data['status'];
+        $updateCountry->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $updateCountry->save();
         return redirect()->back();
