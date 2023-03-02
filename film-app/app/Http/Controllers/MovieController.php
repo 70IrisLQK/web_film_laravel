@@ -77,7 +77,42 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'title' => 'required|max:500',
+            'slug' => 'required|max:500',
+            'subtitle' => 'required|max:500',
+            'original_title' => 'required|max:500',
+            'trailer' => 'required|max:500',
+            'description' => 'required|max:500',
+            'belong_movie' => 'required|max:500',
+            'duration' => 'required|max:500',
+            'tags' => 'required|max:500',
+            'resolution' => 'required',
+            'movie_hot' => 'required',
+            'category_id' => 'required',
+            'country_id' => 'required',
+            'status' => 'required',
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        ], [
+            'title.required' => 'Title is required',
+            'slug.required' => 'Slug is required',
+            'subtitle.required' => 'Subtitle is required',
+            'original_title.required' => 'Original Title is required',
+            'trailer.required' => 'Trailer is required',
+            'description.required' => 'Description is required',
+            'belong_movie.required' => 'Belong movie is required',
+            'duration.required' => 'Duration is required',
+            'tags.required' => 'Tags is required',
+            'resolution.required' => 'Resolution is required',
+            'movie_hot.required' => 'Movie hot is required',
+            'category_id.required' => 'Category_id is required',
+            'country_id.required' => 'Country_id is required',
+            'status.required' => 'Status is required',
+            'image.required' => 'Image is required',
+            'image.image' => 'Image is required type image',
+            'image.mimes' => 'Image is required type jpg, png, jpeg, gif, svg',
+        ]);
+
         $newMovie = new Movie();
         $newMovie->title = $data['title'];
         $newMovie->slug = $data['slug'];
@@ -114,7 +149,7 @@ class MovieController extends Controller
         $newMovie->save();
 
         $newMovie->movieGenre()->attach($data['genre']);
-
+        toastr()->success('Data has been saved successfully!', 'Congrats');
         return redirect()->back();
     }
 
@@ -202,7 +237,7 @@ class MovieController extends Controller
             }
         }
         $updateMovie->save();
-
+        toastr()->success('Data has been updated successfully!', 'Congrats');
         $updateMovie->movieGenre()->sync($data['genre']);
         return redirect()->back();
     }
@@ -222,6 +257,7 @@ class MovieController extends Controller
         }
 
         $findMovieById->delete();
+        toastr()->success('Data has been deleted successfully!', 'Congrats');
         return redirect()->back();
     }
 

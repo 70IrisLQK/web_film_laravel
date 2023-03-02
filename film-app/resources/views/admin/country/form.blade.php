@@ -12,7 +12,13 @@
                 </header>
                 <div class="panel-body">
                     <div class="position-center">
-
+                        @if ($errors->any())
+                            <div class="alert alert-danger" role="alert">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </div>
+                        @endif
                         @if (isset($listCountryById))
                             <form method="POST" action="{{ route('country.update', [$listCountryById->id]) }}">
                                 @method('PUT')

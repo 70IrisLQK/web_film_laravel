@@ -12,7 +12,13 @@
                 </header>
                 <div class="panel-body">
                     <div class="position-center">
-
+                        @if ($errors->any())
+                            <div class="alert alert-danger" role="alert">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </div>
+                        @endif
                         @if (isset($listMovieById))
                             <form method="POST" action="{{ route('movie.update', [$listMovieById->id]) }}"
                                 enctype="multipart/form-data">

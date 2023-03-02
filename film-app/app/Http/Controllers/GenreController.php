@@ -37,7 +37,22 @@ class GenreController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'title' => 'required|unique:genres|max:500',
+            'slug' => 'required|unique:genres|max:500',
+            'description' => 'required|max:500',
+            'status' => 'required',
+        ], [
+            'title.unique' => 'Title already exist. Please try change title',
+            'slug.unique' => 'Slug already exist. Please try change slug',
+            'title.required' => 'Title is required',
+            'slug.required' => 'Slug is required',
+            'description.required' => 'Description is required',
+            'status.required' => 'Status is required',
+            'title' => 'Title max character 500. Please input few than.',
+            'slug' => 'Title max character 500. Please input few than.'
+        ]);
+
         $newGenre = new Genre();
         $newGenre->title = $data['title'];
         $newGenre->slug = $data['slug'];
@@ -82,7 +97,22 @@ class GenreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'title' => 'required|unique:categories|max:500',
+            'slug' => 'required|unique:categories|max:500',
+            'description' => 'required|max:500',
+            'status' => 'required',
+        ], [
+            'title.unique' => 'Title already exist. Please try change title',
+            'slug.unique' => 'Slug already exist. Please try change slug',
+            'title.required' => 'Title is required',
+            'slug.required' => 'Slug is required',
+            'description.required' => 'Description is required',
+            'status.required' => 'Status is required',
+            'title' => 'Title max character 500. Please input few than.',
+            'slug' => 'Title max character 500. Please input few than.'
+        ]);
+
         $updateGenre = Genre::find($id);
         $updateGenre->title = $data['title'];
         $updateGenre->slug = $data['slug'];

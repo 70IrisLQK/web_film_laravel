@@ -41,14 +41,23 @@ class EpisodeController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $newEpisode = new Episode();
-        $newEpisode->movie_id = $data['movie_id'];
-        $newEpisode->link = $data['link'];
-        $newEpisode->episode = $data['episode'];
-        $newEpisode->created_at = Carbon::now('Asia/Ho_Chi_Minh');
-        $newEpisode->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
-        $newEpisode->save();
+        $checkEpisode = Episode::where('episode', $data['episode'])->where('movie_id', $data['movie_id'])->count();
+
+        if ($checkEpisode) {
+            return redirect()->back();
+        } else {
+
+            $newEpisode = new Episode();
+            $newEpisode->movie_id = $data['movie_id'];
+            $newEpisode->link = $data['link'];
+            $newEpisode->episode = $data['episode'];
+            $newEpisode->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+            $newEpisode->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+            $newEpisode->save();
+        }
+
+
         return redirect()->back();
     }
 

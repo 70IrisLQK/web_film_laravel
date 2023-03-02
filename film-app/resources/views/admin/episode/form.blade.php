@@ -6,7 +6,13 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Episode Management</div>
-
+                    @if ($errors->any())
+                        <div class="alert alert-danger" role="alert">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </div>
+                    @endif
                     <div class="card-body">
                         @if (!isset($listEpisodeById))
                             {!! Form::open(['method' => 'POST', 'route' => 'episode.store', 'enctype' => 'multipart/form-data']) !!}

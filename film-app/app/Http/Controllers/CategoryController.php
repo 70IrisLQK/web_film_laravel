@@ -37,7 +37,22 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'title' => 'required|unique:categories|max:500',
+            'slug' => 'required|unique:categories|max:500',
+            'description' => 'required|max:500',
+            'status' => 'required',
+        ], [
+            'title.unique' => 'Title already exist. Please try change title',
+            'slug.unique' => 'Slug already exist. Please try change slug',
+            'title.required' => 'Title is required',
+            'slug.required' => 'Slug is required',
+            'description.required' => 'Description is required',
+            'status.required' => 'Status is required',
+            'title' => 'Title max character 500. Please input few than.',
+            'slug' => 'Title max character 500. Please input few than.'
+        ]);
+
         $newCategory = new Category();
         $newCategory->title = $data['title'];
         $newCategory->slug = $data['slug'];
@@ -47,6 +62,7 @@ class CategoryController extends Controller
         $newCategory->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $newCategory->save();
+        toastr()->success('Data has been saved successfully!', 'Congrats');
         return redirect()->back();
     }
 
@@ -82,7 +98,22 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'title' => 'required|unique:categories|max:500',
+            'slug' => 'required|unique:categories|max:500',
+            'description' => 'required|max:500',
+            'status' => 'required',
+        ], [
+            'title.unique' => 'Title already exist. Please try change title',
+            'slug.unique' => 'Slug already exist. Please try change slug',
+            'title.required' => 'Title is required',
+            'slug.required' => 'Slug is required',
+            'description.required' => 'Description is required',
+            'status.required' => 'Status is required',
+            'title' => 'Title max character 500. Please input few than.',
+            'slug' => 'Title max character 500. Please input few than.'
+        ]);
+
         $updateCategory = Category::find($id);
         $updateCategory->title = $data['title'];
         $updateCategory->slug = $data['slug'];
@@ -91,6 +122,7 @@ class CategoryController extends Controller
         $updateCategory->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $updateCategory->save();
+        toastr()->success('Data has been updated successfully!', 'Congrats');
         return redirect()->back();
     }
 
@@ -103,6 +135,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         Category::find($id)->delete();
+        toastr()->success('Data has been deleted successfully!', 'Congrats');
         return redirect()->back();
     }
     /**

@@ -5,8 +5,8 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-6">
-                        <div class="yoast_breadcrumb hidden-xs"><span><span><a
-                                        href="">{{ $listCategoryBySlug->title }}</a> </span></span></div>
+                        <div class="yoast_breadcrumb hidden-xs"><span><span><a href="">@@@</a>
+                                </span></span></div>
                     </div>
                 </div>
             </div>
@@ -17,11 +17,11 @@
         <main id="main-contents" class="col-xs-12 col-sm-12 col-md-8">
             <section>
                 <div class="section-bar clearfix">
-                    <h1 class="section-title"><span>{{ $listCategoryBySlug->title }}</span></h1>
+                    <h1 class="section-title"><span>Lọc phim</span></h1>
                 </div>
                 @include('pages.includes.filter')
                 <div class="halim_box">
-                    @foreach ($listMovieBySlug as $movie)
+                    @foreach ($listMovies as $movie)
                         <article class="col-md-3 col-sm-3 col-xs-6 thumb grid-item post-37606">
                             <div class="halim-item">
                                 <a class="halim-thumb" href="{{ route('movies', $movie->slug) }}">
@@ -30,7 +30,7 @@
                                             title="{{ $movie->title }}">
                                     </figure>
                                     <span class="status">
-                                        @if ($listCategoryBySlug->title == 'Phim bộ')
+                                        @if ($movie->belong_movie == 'Phim bộ')
                                             @if ($movie->start_episode != $movie->episode)
                                                 Đang chiếu {{ $movie->start_episode }}/{{ $movie->episode }} tập
                                             @else
@@ -68,7 +68,7 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="text-center">
-                    {!! $listMovieBySlug->onEachSide(1)->links() !!}
+                    {{-- {!! $listMovies->links() !!} --}}
                 </div>
             </section>
         </main>

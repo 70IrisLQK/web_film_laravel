@@ -37,7 +37,22 @@ class CountryController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'title' => 'required|unique:categories|max:500',
+            'slug' => 'required|unique:categories|max:500',
+            'description' => 'required|max:500',
+            'status' => 'required',
+        ], [
+            'title.unique' => 'Title already exist. Please try change title',
+            'slug.unique' => 'Slug already exist. Please try change slug',
+            'title.required' => 'Title is required',
+            'slug.required' => 'Slug is required',
+            'description.required' => 'Description is required',
+            'status.required' => 'Status is required',
+            'title' => 'Title max character 500. Please input few than.',
+            'slug' => 'Title max character 500. Please input few than.'
+        ]);
+
         $newCountry = new Country();
         $newCountry->title = $data['title'];
         $newCountry->slug = $data['slug'];
@@ -47,6 +62,7 @@ class CountryController extends Controller
         $newCountry->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $newCountry->save();
+        toastr()->success('Data has been saved successfully!', 'Congrats');
         return redirect()->back();
     }
 
@@ -82,7 +98,22 @@ class CountryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'title' => 'required|unique:countries|max:500',
+            'slug' => 'required|unique:countries|max:500',
+            'description' => 'required|max:500',
+            'status' => 'required',
+        ], [
+            'title.unique' => 'Title already exist. Please try change title',
+            'slug.unique' => 'Slug already exist. Please try change slug',
+            'title.required' => 'Title is required',
+            'slug.required' => 'Slug is required',
+            'description.required' => 'Description is required',
+            'status.required' => 'Status is required',
+            'title' => 'Title max character 500. Please input few than.',
+            'slug' => 'Title max character 500. Please input few than.'
+        ]);
+
         $updateCountry = Country::find($id);
         $updateCountry->title = $data['title'];
         $updateCountry->slug = $data['slug'];
@@ -91,6 +122,7 @@ class CountryController extends Controller
         $updateCountry->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $updateCountry->save();
+        toastr()->success('Data has been updated successfully!', 'Congrats');
         return redirect()->back();
     }
 
@@ -103,6 +135,7 @@ class CountryController extends Controller
     public function destroy($id)
     {
         Country::find($id)->delete();
+        toastr()->success('Data has been deleted successfully!', 'Congrats');
         return redirect()->back();
     }
 }

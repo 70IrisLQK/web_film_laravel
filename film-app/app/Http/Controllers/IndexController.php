@@ -8,6 +8,7 @@ use App\Models\Episode;
 use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\MovieGenre;
+use App\Models\Rating;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -81,6 +82,7 @@ class IndexController extends Controller
 
         // List movies genres
         $listMovieGenres = MovieGenre::where('genre_id', $listGenreBySlug->id)->get();
+
         $manyGenre = [];
         foreach ($listMovieGenres as $key => $value) {
             $manyGenre[] = $value->movie_id;
@@ -123,19 +125,24 @@ class IndexController extends Controller
 
         $listEpisode = Episode::where('movie_id', $listMovieBySlug->id)->where('episode', $episode)->first();
 
+        $listMovieRelates = Movie::with('category', 'genre', 'country')
+            ->where('category_id', $listMovieBySlug->category->id)
+            ->where('status', 1)
+            ->whereNotIn('slug', [$slug])
+            ->orderBy(DB::raw('RAND()'))
+            ->get();
         return view('pages.watch', compact(
             'listCategories',
             'listGenres',
             'listCountries',
             'listMovieBySlug',
             'listEpisode',
-            'episode'
+            'episode',
+            'listMovieRelates'
         ));
     }
     public function movie($slug)
     {
-
-
         $listCategories = Category::orderBy('created_at', 'DESC')->where('status', 1)->get();
         $listGenres = Genre::orderBy('created_at', 'DESC')->where('status', 1)->get();
         $listCountries = Country::orderBy('created_at', 'DESC')->where('status', 1)->get();
@@ -154,6 +161,17 @@ class IndexController extends Controller
         $firstEpisode = Episode::with('movie')->where('movie_id', $listMovieBySlug->id)->first();
         // Count Episode
         $countEpisode = Episode::with('movie')->where('movie_id', $listMovieBySlug->id)->get()->count();
+
+        $rating = Rating::where('movie_id', $listMovieBySlug->id)->avg('rating');
+        $rating = round($rating);
+
+        $countTotal = Rating::where('movie_id', $listMovieBySlug->id)->count();
+
+        // Increase movie view
+        $countView = $listMovieBySlug->count_view;
+        $countView += 1;
+        $listMovieBySlug->count_view = $countView;
+
         return view('pages.movie', compact(
             'listCategories',
             'listGenres',
@@ -162,7 +180,9 @@ class IndexController extends Controller
             'listMovieRelate',
             'listEpisode',
             'firstEpisode',
-            'countEpisode'
+            'countEpisode',
+            'rating',
+            'countTotal'
         ));
     }
 
@@ -221,6 +241,37 @@ class IndexController extends Controller
             ));
         } else {
             return redirect()->to('/');
+        }
+    }
+
+    public function filter()
+    {
+        $order = $_GET['order'];
+        $genre = $_GET['genre'];
+        $country = $_GET['country'];
+        $year = $_GET['year'];
+        if (empty($order) && empty($genre) && empty($country) && empty($year)) {
+            return redirect()->back();
+        } else {
+            $listCategories = Category::orderBy('created_at', 'DESC')->get();
+            $listGenres = Genre::orderBy('created_at', 'DESC')->get();
+            $listCountries = Country::orderBy('created_at', 'DESC')->get();
+
+            $listMovies = Movie::withCount('episodes');
+            if ($genre) {
+                $listMovies = $listMovies->where('genre_id', '=', $genre);
+            }
+            if ($country) {
+                $listMovies = $listMovies->where('country_id', '=', $country);
+            }
+            if ($year) {
+                $listMovies = $listMovies->where('year', '=', $year);
+            }
+            if ($order) {
+                $listMovies = $listMovies->orderBy('title', 'ASC');
+            }
+            $listMovies = $listMovies->orderBy('created_at', 'DESC')->paginate(20);
+            return view('pages.filter', compact('listCategories', 'listGenres', 'listCountries', 'listMovies'));
         }
     }
 }

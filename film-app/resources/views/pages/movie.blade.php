@@ -118,7 +118,37 @@
                                         @endif
 
                                     </li>
+                                    <li class="list-info-group-item">
+                                        <div class="box-rating" itemprop="aggregateRating" itemscope=""
+                                            itemtype="https://schema.org/AggregateRating">
+                                            <div id="star" style="cursor: pointer; width: 200px; padding-right: 10px;">
+                                                <ul class="list-inline rating" title="Average Rating">
+                                                    @for ($count = 1; $count <= 5; $count++)
+                                                        @php
+                                                            if ($count <= $rating) {
+                                                                $color = 'color:#ffcc00;';
+                                                            } else {
+                                                                $color = 'color:#ccc;';
+                                                            }
+                                                        @endphp
+                                                        <li title="star_rating"
+                                                            id="{{ $listMovieBySlug->id }}-{{ $count }}"
+                                                            data-index="{{ $count }}"
+                                                            data-movie_id="{{ $listMovieBySlug->id }}"
+                                                            data-rating="{{ $rating }}" clas s="rating"
+                                                            style="cursor:pointer; {{ $color }} font-size:30px;">
+                                                            &#9733;</li>
+                                                    @endfor
+                                                </ul>
+                                            </div>
+                                            <div style="float: left; line-height: 20px; margin: 0 5px; ">
+                                                <span id="hint">
+                                                    ({{ $rating }} điểm/{{ $countTotal }} lượt)
+                                                </span>
+                                            </div>
+                                        </div>
 
+                                    </li>
                                     {{-- <li class="list-info-group-item"><span>Đạo diễn</span> : <a class="director"
                                             rel="nofollow" href="https://phimhay.co/dao-dien/cate-shortland"
                                             title="Cate Shortland">Cate Shortland</a></li>
@@ -272,4 +302,5 @@
             })
         });
     </script>
+
 @endsection
