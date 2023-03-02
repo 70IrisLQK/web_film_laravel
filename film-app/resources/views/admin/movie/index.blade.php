@@ -29,6 +29,7 @@
                                 <th>Original Title</th>
                                 <th>Trailer</th>
                                 <th>Duration</th>
+                                <th>Belong Movie</th>
                                 <th colspan="5">Description</th>
                                 <th colspan="5">Tag</th>
                                 <th>Image</th>
@@ -58,6 +59,7 @@
                                         </div>
                                     </td>
                                     <td>{{ $movie->duration }}</td>
+                                    <td>{{ $movie->belong_movie }}</td>
                                     <td colspan="5">{{ $movie->description }}</td>
                                     <td colspan="5">{{ $movie->tags }}
                                     </td>

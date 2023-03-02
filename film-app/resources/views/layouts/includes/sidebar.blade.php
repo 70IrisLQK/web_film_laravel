@@ -52,6 +52,16 @@
                         <li><a href="{{ route('movie.create') }}">Create Movie</a></li>
                     </ul>
                 </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-video-camera"></i>
+                        <span>Episode Management</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{ route('episode.index') }}">List Episode</a></li>
+                        <li><a href="{{ route('episode.create') }}">Create Episode</a></li>
+                    </ul>
+                </li>
 
             </ul>
         </div>

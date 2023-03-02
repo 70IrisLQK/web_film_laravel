@@ -24,10 +24,9 @@
             <section id="content" class="test">
                 <div class="clearfix wrap-content">
 
-                    @foreach ($listMovieBySlug->episodes as $episode)
-                        {!! $episode->link !!}
-                    @endforeach
-
+                    <div class="iframe-watch">
+                        {!! $listEpisode->link !!}
+                    </div>
 
                     {{-- <div class="button-watch">
                         <ul class="halim-social-plugin col-xs-4 hidden-xs">
@@ -97,14 +96,15 @@
                             <div role="tabpanel" class="tab-pane active server-1" id="server-0">
                                 <div class="halim-server">
                                     <ul class="halim-list-eps">
-                                        @foreach ($listMovieBySlug->episodes as $key => $episode)
-                                            <a href="{{ route('episodes') }}">
+                                        @foreach ($listMovieBySlug->episodes as $key => $item)
+                                            <a
+                                                href="{{ url('watch/' . $listMovieBySlug->slug . '/episode-' . $item->episode) }}">
                                                 <li class="halim-episode"><span
-                                                        class="halim-btn halim-btn-2 {{ $key == 0 ? 'active' : '' }} halim-info-1-1 box-shadow"
+                                                        class="halim-btn halim-btn-2 {{ $item->episode == $episode ? 'active' : '' }} halim-info-1-1 box-shadow"
                                                         data-post-id="37976" data-server="1" data-episode="1"
                                                         data-position="first" data-embed="0"
-                                                        data-title="Xem phim {{ $listMovieBySlug->title }} - Tập {{ $episode->episode }} - {{ $listMovieBySlug->original_title }} - vietsub + Thuyết Minh"
-                                                        data-h1="{{ $listMovieBySlug->title }} - tập {{ $episode->episode }}">{{ $episode->episode }}</span>
+                                                        data-title="Xem phim {{ $listMovieBySlug->title }} - Tập {{ $item->episode }} - {{ $listMovieBySlug->original_title }} - vietsub + Thuyết Minh"
+                                                        data-h1="{{ $listMovieBySlug->title }} - tập {{ $item->episode }}">{{ $item->episode }}</span>
                                                 </li>
                                             </a>
                                         @endforeach

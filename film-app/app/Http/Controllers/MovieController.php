@@ -84,6 +84,7 @@ class MovieController extends Controller
         $newMovie->subtitle = $data['subtitle'];
         $newMovie->original_title = $data['original_title'];
         $newMovie->trailer = $data['trailer'];
+        $newMovie->belong_movie = $data['belong_movie'];
         $newMovie->duration = $data['duration'];
         $newMovie->tags = $data['tags'];
         $newMovie->description = $data['description'];
@@ -174,6 +175,7 @@ class MovieController extends Controller
         $updateMovie->slug = $data['slug'];
         $updateMovie->original_title = $data['original_title'];
         $updateMovie->trailer = $data['trailer'];
+        $updateMovie->belong_movie = $data['belong_movie'];
         $updateMovie->duration = $data['duration'];
         $updateMovie->tags = $data['tags'];
         $updateMovie->description = $data['description'];

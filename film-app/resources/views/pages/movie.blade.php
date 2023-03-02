@@ -36,12 +36,15 @@
                                 <img class="movie-thumb" src="{{ asset('uploads/movies/' . $listMovieBySlug->image) }}"
                                     alt="{{ $listMovieBySlug->title }}">
                                 @if ($listMovieBySlug->resolution != 5)
-                                    <div class="bwa-content">
-                                        <div class="loader"></div>
-                                        <a href="{{ route('watch', [$listMovieBySlug->slug]) }}" class="bwac-btn">
-                                            <i class="fa fa-play"></i>
-                                        </a>
-                                    </div>
+                                    @if ($countEpisode > 0)
+                                        <div class="bwa-content">
+                                            <div class="loader"></div>
+                                            <a href="{{ url('watch/' . $listMovieBySlug->slug . '/episode-' . $firstEpisode->episode) }}"
+                                                class="bwac-btn">
+                                                <i class="fa fa-play"></i>
+                                            </a>
+                                        </div>
+                                    @endif
                                 @else
                                     <a href="#watch-trailer" style="display:block;"
                                         class="btn btn-primary watch-trailer">Xem Trailer</a>
@@ -55,28 +58,71 @@
                                     {{ $listMovieBySlug->original_title }}
                                 </h2>
                                 <ul class="list-info-group">
-                                    <li class="list-info-group-item"><span>Trạng Thái</span> : <span
-                                            class="quality">HD</span><span class="episode">Vietsub</span></li>
-                                    {{-- <li class="list-info-group-item"><span>Điểm IMDb</span> : <span
-                                            class="imdb">7.2</span></li> --}}
-                                    <li class="list-info-group-item"><span>Thời lượng</span> : 133 Phút</li>
+                                    <li class="list-info-group-item"><span>Trạng Thái</span> : <span class="quality">
+                                            @if ($listMovieBySlug->resolution == 0)
+                                                SD
+                                            @else
+                                                FULL HD
+                                            @endif
+                                        </span><span class="episode">
+                                            @if ($listMovieBySlug->subtitle == 0)
+                                                Thuyết minh
+                                            @else
+                                                Việt Sub
+                                            @endif
+                                        </span></li>
+                                    <li class="list-info-group-item"><span>Điểm IMDb</span> : <span
+                                            class="imdb">{{ $listMovieBySlug->imdb }}</span></li>
+                                    <li class="list-info-group-item"><span>Thời lượng</span> :
+                                        {{ $listMovieBySlug->duration }}</li>
+                                    @if ($listMovieBySlug->belong_movie)
+                                        <li class="list-info-group-item"><span>Tập phim</span> :
+                                            {{ $countEpisode }}/{{ $listMovieBySlug->episode }} -
+                                            @if ($countEpisode == $listMovieBySlug->episode)
+                                                Full
+                                            @else
+                                                Đang cập nhật
+                                            @endif
+                                        </li>
+                                    @endif
                                     <li class="list-info-group-item"><span>Thể loại</span> :
                                         @foreach ($listMovieBySlug->movieGenre as $item)
                                             <a href="{{ route('genres', [$item->slug]) }}" rel="category tag">
                                                 {{ $item->title }}
                                             </a>
                                         @endforeach
-
                                     </li>
-
-
                                     <li class="list-info-group-item"><span>Quốc gia</span> : <a
                                             href="{{ route('countries', [$listMovieBySlug->country->slug]) }}"
                                             rel="tag">{{ $listMovieBySlug->country->title }}</a></li>
+
+                                    <li class="list-info-group-item"><span>Tập Phim Mới Nhất</span> :
+                                        @if ($countEpisode > 0)
+                                            @if ($listMovieBySlug->belong_movie == 'Phim bộ')
+                                                @foreach ($listEpisode as $episode)
+                                                    <a href="{{ url('watch/' . $episode->movie->slug . '/episode-' . $episode->episode) }}"
+                                                        rel="tag">Tập
+                                                        {{ $episode->episode }}
+                                                    </a>
+                                                @endforeach
+                                            @else
+                                                @foreach ($listEpisode as $episode)
+                                                    <a href="{{ url('watch/' . $episode->movie->slug . '/episode-' . $episode->episode) }}"
+                                                        rel="tag">Tập
+                                                        {{ $episode->episode }}
+                                                    </a>
+                                                @endforeach
+                                            @endif
+                                        @else
+                                            Đang cập nhật
+                                        @endif
+
+                                    </li>
+
                                     {{-- <li class="list-info-group-item"><span>Đạo diễn</span> : <a class="director"
                                             rel="nofollow" href="https://phimhay.co/dao-dien/cate-shortland"
-                                            title="Cate Shortland">Cate Shortland</a></li> --}}
-                                    {{-- <li class="list-info-group-item last-item"
+                                            title="Cate Shortland">Cate Shortland</a></li>
+                                    <li class="list-info-group-item last-item"
                                         style="-overflow: hidden;-display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-flex: 1;-webkit-box-orient: vertical;">
                                         <span>Diễn viên</span> : <a href="" rel="nofollow" title="C.C. Smiff">C.C.
                                             Smiff</a>, <a href="" rel="nofollow" title="David Harbour">David
@@ -115,12 +161,8 @@
                         </div>
                         <div class="entry-content htmlwrap clearfix">
                             <div class="video-item halim-entry-box">
-                                <article id="watch-trailer" class="item-content">
-                                    <iframe width="100%" height="315"
-                                        src="https://www.youtube.com/embed/{{ $listMovieBySlug->trailer }}"
-                                        title="YouTube video player" frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        allowfullscreen></iframe>
+                                <article id="watch-trailer" class="item-content iframe">
+                                    {!! $listMovieBySlug->trailer !!}
                                 </article>
                             </div>
                         </div>
@@ -168,7 +210,7 @@
             <section class="related-movies">
                 <div id="halim_related_movies-2xx" class="wrap-slider">
                     <div class="section-bar clearfix">
-                        <h3 class="section-title"><span>CÓ THỂ BẠN MUỐN XEM</span></h3>
+                        <h class="section-title"><span>CÓ THỂ BẠN MUỐN XEM</span></h>
                     </div>
                     <div id="halim_related_movies-2" class="owl-carousel owl-theme related-film">
                         @foreach ($listMovieRelate as $relateMovie)
@@ -186,7 +228,7 @@
                                         <div class="halim-post-title-box">
                                             <div class="halim-post-title ">
                                                 <p class="entry-title">{{ $relateMovie->title }}</p>
-                                                <p class="original_title">Monkey King: The One And Only</p>
+                                                <p class="original_title">{{ $relateMovie->original_title }}</p>
                                             </div>
                                         </div>
                                     </a>
@@ -194,7 +236,6 @@
                             </article>
                         @endforeach
                     </div>
-
                 </div>
             </section>
         </main>

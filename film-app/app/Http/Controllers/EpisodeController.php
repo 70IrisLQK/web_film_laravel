@@ -115,8 +115,12 @@ class EpisodeController extends Controller
         $listMovieById = Movie::find($movieId);
         $output = '<option>Choose Episode</option>';
 
-        for ($i = 1; $i <= $listMovieById->episode; $i++) {
-            $output .= '<option value="' . $i . '">' . $i . '</option>';
+        if ($listMovieById->belong_movie == 'Phim bộ') {
+            for ($i = 1; $i <= $listMovieById->episode; $i++) {
+                $output .= '<option value="' . $i . '">' . $i . '</option>';
+            }
+        } else {
+            $output .= '<option value="HD">HD</option> <option>Full HD</option>';
         }
         echo $output;
     }

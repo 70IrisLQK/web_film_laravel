@@ -44,6 +44,11 @@
                                 value="{{ isset($listMovieById) ? $listMovieById->trailer : '' }}">
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputPassword1">Belong Movie</label>
+                            <input type="text" class="form-control" name="belong_movie"
+                                value="{{ isset($listMovieById) ? $listMovieById->belong_movie : '' }}">
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputPassword1">Duration</label>
                             <input type="text" class="form-control" name="duration"
                                 value="{{ isset($listMovieById) ? $listMovieById->duration : '' }}">

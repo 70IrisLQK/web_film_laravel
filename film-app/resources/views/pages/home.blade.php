@@ -17,14 +17,13 @@
                             <a class="halim-thumb" href="{{ route('movies', $hotMovie->slug) }}"
                                 title="{{ $hotMovie->title }}">
                                 <figure><img class="lazy img-responsive"
-                                        src="{{ asset('uploads/movies/' . $hotMovie->image) }}"
-                                        alt="{{ asset('uploads/movies/' . $hotMovie->image) }}"
-                                        title="{{ asset('uploads/movies/' . $hotMovie->image) }}"></figure>
+                                        src="{{ asset('uploads/movies/' . $hotMovie->image) }}" alt="{{ $hotMovie->title }}"
+                                        title="{{ $hotMovie->title }}"></figure>
                                 <span class="status">
                                     @if ($hotMovie->resolution == 0)
                                         SD
                                     @else
-                                        HD
+                                        FULL HD
                                     @endif
                                 </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
                                     @if ($hotMovie->subtitle == 1)
@@ -54,7 +53,7 @@
             @foreach ($listCategoryByMovie as $category)
                 <section id="halim-advanced-widget-2">
                     <div class="section-heading">
-                        <a href="danhmuc.php" title="Phim Bộ">
+                        <a href="{{ route('categories', [$category->slug]) }}" title="Phim Bộ">
                             <span class="h-text">{{ $category->title }}</span>
                         </a>
                     </div>
@@ -62,27 +61,45 @@
                         @foreach ($category->movies as $movie)
                             <article class="col-md-3 col-sm-3 col-xs-6 thumb grid-item post-37606">
                                 <div class="halim-item">
-                                    <a class="halim-thumb" href="chitiet.php">
+                                    <a class="halim-thumb" href="{{ route('movies', [$movie->slug]) }}">
                                         <figure><img class="lazy img-responsive"
-                                                src="{{ asset('uploads/movies/' . $movie->image) }}"
-                                                alt="{{ asset('uploads/movies/' . $movie->image) }}"
-                                                title="{{ $movie->title }}">
+                                                src=" {{ asset('uploads/movies/' . $movie->image) }} "
+                                                alt=" {{ $movie->title }} " title="{{ $movie->title }}">
                                         </figure>
-                                        <span class="status">TẬP 15</span><span class="episode"><i class="fa fa-play"
-                                                aria-hidden="true"></i>Vietsub</span>
+                                        <span class="status">
+                                            @if ($category->title == 'Phim bộ')
+                                                @if ($movie->start_episode != $movie->episode)
+                                                    Đang Chiếu {{ $movie->start_episode }}/{{ $movie->episode }} tập
+                                                @else
+                                                    Hoàn Tất {{ $movie->start_episode }}/{{ $movie->episode }} tập
+                                                @endif
+                                            @else
+                                                <td>
+                                                    @if ($movie->resolution == 0)
+                                                        SD
+                                                    @else
+                                                        FULL HD
+                                                    @endif
+                                                </td>
+                                            @endif
+                                        </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
+                                            @if ($movie->subtitle == 0)
+                                                Thuyết minh
+                                            @else
+                                                Việt Sub
+                                            @endif
+                                        </span>
                                         <div class="icon_overlay"></div>
                                         <div class="halim-post-title-box">
                                             <div class="halim-post-title ">
                                                 <p class="entry-title">{{ $movie->title }}</p>
-                                                <p class="original_title">My Roommate Is a Gumiho</p>
+                                                <p class="original_title">{{ $movie->original_title }}</p>
                                             </div>
                                         </div>
                                     </a>
                                 </div>
                             </article>
                         @endforeach
-
-
                     </div>
                 </section>
                 <div class="clearfix"></div>

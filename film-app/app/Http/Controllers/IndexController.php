@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Country;
+use App\Models\Episode;
 use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\MovieGenre;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class IndexController extends Controller
 {
@@ -40,7 +41,7 @@ class IndexController extends Controller
 
         $listCategoryBySlug = Category::where('slug', $slug)->first();
 
-        $listMovieBySlug = Movie::where('category_id', $listCategoryBySlug->created_at)->paginate(10);
+        $listMovieBySlug = Movie::with('category')->where('category_id', $listCategoryBySlug->id)->paginate(20);
 
         return view('pages.category', compact(
             'listCategories',
@@ -58,14 +59,14 @@ class IndexController extends Controller
 
         $listCountryBySlug = Country::where('slug', $slug)->first();
 
-        $listMovieBySlug = Movie::where('country_id', $listCountryBySlug->created_at)->paginate(40);
+        $listMovieBySlug = Movie::with('category')->where('country_id', $listCountryBySlug->id)->paginate(20);
 
         return view('pages.country', compact(
             'listCategories',
             'listGenres',
             'listCountries',
             'listCountryBySlug',
-            'listMovieBySlug'
+            'listMovieBySlug',
         ));
     }
     public function genre($slug)
@@ -76,6 +77,7 @@ class IndexController extends Controller
 
         $listGenreBySlug = Genre::where('slug', $slug)->first();
 
+        $listCategoryBySlug = Category::where('slug', $slug)->first();
 
         // List movies genres
         $listMovieGenres = MovieGenre::where('genre_id', $listGenreBySlug->id)->get();
@@ -92,6 +94,7 @@ class IndexController extends Controller
             'listCountries',
             'listGenreBySlug',
             'listMovieBySlug',
+            'listCategoryBySlug'
         ));
     }
     public function episode()
@@ -99,23 +102,40 @@ class IndexController extends Controller
         return view('pages.episode');
     }
 
-    public function watch($slug)
+    public function watch($slug, $episode)
     {
+
         $listCategories = Category::orderBy('created_at', 'DESC')->where('status', 1)->get();
         $listGenres = Genre::orderBy('created_at', 'DESC')->where('status', 1)->get();
         $listCountries = Country::orderBy('created_at', 'DESC')->where('status', 1)->get();
 
         $listMovieBySlug = Movie::with('category', 'genre', 'country', 'movieGenre')->where('slug', $slug)->where('status', 1)->first();
 
+
+        if (isset($episode)) {
+            $episode = $episode;
+            $episode = substr($episode, 8, 20);
+            $firstEpisode = Episode::with('movie')->where('movie_id', $listMovieBySlug->id)->first();
+        } else {
+            $episode = 1;
+            $firstEpisode = Episode::with('movie')->where('movie_id', $listMovieBySlug->id)->first();
+        }
+
+        $listEpisode = Episode::where('movie_id', $listMovieBySlug->id)->where('episode', $episode)->first();
+
         return view('pages.watch', compact(
             'listCategories',
             'listGenres',
             'listCountries',
             'listMovieBySlug',
+            'listEpisode',
+            'episode'
         ));
     }
     public function movie($slug)
     {
+
+
         $listCategories = Category::orderBy('created_at', 'DESC')->where('status', 1)->get();
         $listGenres = Genre::orderBy('created_at', 'DESC')->where('status', 1)->get();
         $listCountries = Country::orderBy('created_at', 'DESC')->where('status', 1)->get();
@@ -123,18 +143,26 @@ class IndexController extends Controller
         $listMovieBySlug = Movie::with('category', 'genre', 'country', 'movieGenre')->where('slug', $slug)->where('status', 1)->first();
 
         $listMovieRelate = Movie::with('category', 'genre', 'country')
-            ->where('category_id', $listMovieBySlug->category->created_at)
+            ->where('category_id', $listMovieBySlug->category->id)
             ->where('status', 1)
             ->whereNotIn('slug', [$slug])
             ->orderBy(DB::raw('RAND()'))
             ->get();
-
+        // Get 3 episode current
+        $listEpisode = Episode::with('movie')->where('movie_id', $listMovieBySlug->id)->orderBy('episode', 'DESC')->take(3)->get();
+        // Get 1 episode
+        $firstEpisode = Episode::with('movie')->where('movie_id', $listMovieBySlug->id)->first();
+        // Count Episode
+        $countEpisode = Episode::with('movie')->where('movie_id', $listMovieBySlug->id)->get()->count();
         return view('pages.movie', compact(
             'listCategories',
             'listGenres',
             'listCountries',
             'listMovieBySlug',
-            'listMovieRelate'
+            'listMovieRelate',
+            'listEpisode',
+            'firstEpisode',
+            'countEpisode'
         ));
     }
 

@@ -26,17 +26,37 @@
                             <div class="halim-item">
                                 <a class="halim-thumb" href="{{ route('movies', $movie->slug) }}">
                                     <figure><img class="lazy img-responsive"
-                                            src="{{ asset('uploads/movies/' . $movie->image) }}"
-                                            alt="{{ asset('uploads/movies/' . $movie->image) }}"
+                                            src="{{ asset('uploads/movies/' . $movie->image) }}" alt="{{ $movie->title }}"
                                             title="{{ $movie->title }}">
                                     </figure>
-                                    <span class="status">TẬP 15</span><span class="episode"><i class="fa fa-play"
-                                            aria-hidden="true"></i>Vietsub</span>
+                                    <span class="status">
+                                        @if ($movie->category->title == 'Phim bộ')
+                                            @if ($movie->start_episode != $movie->episode)
+                                                Đang chiếu {{ $movie->start_episode }}/{{ $movie->episode }} tập
+                                            @else
+                                                Hoàn tất {{ $movie->start_episode }}/{{ $movie->episode }} tập
+                                            @endif
+                                        @else
+                                            @if ($movie->resolution == 0)
+                                                SD
+                                            @else
+                                                FULL HD
+                                            @endif
+                                        @endif
+
+                                    </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
+                                        @if ($movie->subtitle == 0)
+                                            Thuyết minh
+                                        @else
+                                            Việt Sub
+                                        @endif
+
+                                    </span>
                                     <div class="icon_overlay"></div>
                                     <div class="halim-post-title-box">
                                         <div class="halim-post-title ">
                                             <p class="entry-title">{{ $movie->title }}</p>
-                                            <p class="original_title">My Roommate Is a Gumiho</p>
+                                            <p class="original_title">{{ $movie->original_title }}</p>
                                         </div>
                                     </div>
                                 </a>
