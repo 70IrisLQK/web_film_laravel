@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rating;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class RatingController extends Controller
 {
@@ -18,6 +19,7 @@ class RatingController extends Controller
             echo 'exist';
         } else {
             $newRating = new Rating();
+            $newRating->id = Str::random(24);
             $newRating->movie_id = $data['movie_id'];
             $newRating->ip_address = $ipAddress;
             $newRating->rating = $data['index'];

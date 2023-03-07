@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MovieGenre extends Model
 {
     use HasFactory;
+    public $incrementing = false;
     public $timestamps = false;
     protected $table = 'movie_genre';
 }

@@ -7,19 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movie extends Model
 {
+    use HasFactory;
+
     public $timestamps = false;
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class);
     }
-    public function country()
-    {
-        return $this->belongsTo(Country::class, 'country_id');
-    }
+
     public function genre()
     {
-        return $this->belongsTo(Genre::class, 'genre_id');
+        return $this->belongsTo(Genre::class);
     }
     public function movieGenre()
     {
@@ -30,5 +31,8 @@ class Movie extends Model
         return $this->hasMany(Episode::class);
     }
 
-    use HasFactory;
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
 }

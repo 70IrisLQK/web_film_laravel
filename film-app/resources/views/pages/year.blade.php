@@ -24,19 +24,58 @@
                     @foreach ($listMovieByYear as $movie)
                         <article class="col-md-3 col-sm-3 col-xs-6 thumb grid-item post-37606">
                             <div class="halim-item">
-                                <a class="halim-thumb" href="{{ route('movies', $movie->slug) }}">
-                                    <figure><img class="lazy img-responsive"
-                                            src="{{ asset('uploads/movies/' . $movie->image) }}"
-                                            alt="{{ asset('uploads/movies/' . $movie->image) }}"
-                                            title="{{ $movie->title }}">
+                                <a class="halim-thumb" href="{{ route('phim', $movie->slug) }}">
+                                    <figure>
+                                        @if (empty($movie->image))
+                                            <img class="lazy img-responsive" src="{{ $movie->link_image }}"
+                                                alt="{{ $movie->title }}" title="{{ $movie->title }}">
+                                        @else
+                                            <img class="lazy img-responsive"
+                                                src="{{ asset('uploads/movies/' . $movie->image) }}"
+                                                alt="{{ $movie->title }}" title="{{ $movie->title }}">
+                                        @endif
                                     </figure>
-                                    <span class="status">TẬP 15</span><span class="episode"><i class="fa fa-play"
-                                            aria-hidden="true"></i>Vietsub</span>
+                                    <span class="status">
+                                        @if ($movie->type == 2 && strcmp($movie->episode_total, '1') !== 0)
+                                            {{ $movie->episodes_count . '/' . $movie->episode_total }}
+                                        @else
+                                            @if ($movie->quality && $movie->type != 1)
+                                                @if ($movie->quality == 0)
+                                                    CAM
+                                                @elseif($movie->quality == 1)
+                                                    SD
+                                                @elseif($movie->quality == 2)
+                                                    HD
+                                                @elseif($movie->quality == 3)
+                                                    Full HD
+                                                @endif
+                                            @elseif ($movie->type == 2)
+                                                @if ($movie->quality == 0)
+                                                    CAM
+                                                @elseif($movie->quality == 1)
+                                                    SD
+                                                @elseif($movie->quality == 2)
+                                                    HD
+                                                @elseif($movie->quality == 3)
+                                                    Full HD
+                                                @endif
+                                            @else
+                                                {{ $movie->episodes_count . '/' . $movie->episode_total }}
+                                            @endif
+                                        @endif
+                                    </span>
+                                    <span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
+                                        @if ($movie->lang == 0)
+                                            Vietsub
+                                        @else
+                                            Thuyết minh
+                                        @endif
+                                    </span>
                                     <div class="icon_overlay"></div>
                                     <div class="halim-post-title-box">
                                         <div class="halim-post-title ">
                                             <p class="entry-title">{{ $movie->title }}</p>
-                                            <p class="original_title">My Roommate Is a Gumiho</p>
+                                            <p class="original_title">{{ $movie->origin_name }}</p>
                                         </div>
                                     </div>
                                 </a>
@@ -55,172 +94,12 @@
                         <li><a class="next page-numbers" href=""><i class="hl-down-open rotate-right"></i></a>
                         </li>
                     </ul> --}}
-                    {!! $listMovieByYear->onEachSide(1)->links() !!}
+                    {!! $listMovieByYear->links('vendor.pagination.custom') !!}
                 </div>
             </section>
+
         </main>
-        <aside id="sidebar" class="col-xs-12 col-sm-12 col-md-4">
-            <div id="halim_tab_popular_videos-widget-7" class="widget halim_tab_popular_videos-widget">
-                <div class="section-bar clearfix">
-                    <div class="section-title">
-                        <span>Top Views</span>
-                        <ul class="halim-popular-tab" role="tablist">
-                            <li role="presentation" class="active">
-                                <a class="ajax-tab" role="tab" data-toggle="tab" data-showpost="10"
-                                    data-type="today">Day</a>
-                            </li>
-                            <li role="presentation">
-                                <a class="ajax-tab" role="tab" data-toggle="tab" data-showpost="10"
-                                    data-type="week">Week</a>
-                            </li>
-                            <li role="presentation">
-                                <a class="ajax-tab" role="tab" data-toggle="tab" data-showpost="10"
-                                    data-type="month">Month</a>
-                            </li>
-                            <li role="presentation">
-                                <a class="ajax-tab" role="tab" data-toggle="tab" data-showpost="10"
-                                    data-type="all">All</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <section class="tab-content">
-                    <div role="tabpanel" class="tab-pane active halim-ajax-popular-post">
-                        <div class="halim-ajax-popular-post-loading hidden"></div>
-                        <div id="halim-ajax-popular-post" class="popular-post">
-                            <div class="item post-37176">
-                                <a href="chitiet.php" title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ">
-                                    <div class="item-link">
-                                        <img src="https://ghienphim.org/uploads/GPax0JpZbqvIVyfkmDwhRCKATNtLloFQ.jpeg?v=1624801798"
-                                            class="lazy post-thumb" alt="CHỊ MƯỜI BA: BA NGÀY SINH TỬ"
-                                            title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ" />
-                                        <span class="is_trailer">Trailer</span>
-                                    </div>
-                                    <p class="title">CHỊ MƯỜI BA: BA NGÀY SINH TỬ</p>
-                                </a>
-                                <div class="viewsCount" style="color: #9d9d9d;">3.2K lượt xem</div>
-                                <div style="float: left;">
-                                    <span class="user-rate-image post-large-rate stars-large-vang"
-                                        style="display: block;/* width: 100%; */">
-                                        <span style="width: 0%"></span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="item post-37176">
-                                <a href="chitiet.php" title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ">
-                                    <div class="item-link">
-                                        <img src="https://ghienphim.org/uploads/GPax0JpZbqvIVyfkmDwhRCKATNtLloFQ.jpeg?v=1624801798"
-                                            class="lazy post-thumb" alt="CHỊ MƯỜI BA: BA NGÀY SINH TỬ"
-                                            title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ" />
-                                        <span class="is_trailer">Trailer</span>
-                                    </div>
-                                    <p class="title">CHỊ MƯỜI BA: BA NGÀY SINH TỬ</p>
-                                </a>
-                                <div class="viewsCount" style="color: #9d9d9d;">3.2K lượt xem</div>
-                                <div style="float: left;">
-                                    <span class="user-rate-image post-large-rate stars-large-vang"
-                                        style="display: block;/* width: 100%; */">
-                                        <span style="width: 0%"></span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="item post-37176">
-                                <a href="chitiet.php" title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ">
-                                    <div class="item-link">
-                                        <img src="https://ghienphim.org/uploads/GPax0JpZbqvIVyfkmDwhRCKATNtLloFQ.jpeg?v=1624801798"
-                                            class="lazy post-thumb" alt="CHỊ MƯỜI BA: BA NGÀY SINH TỬ"
-                                            title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ" />
-                                        <span class="is_trailer">Trailer</span>
-                                    </div>
-                                    <p class="title">CHỊ MƯỜI BA: BA NGÀY SINH TỬ</p>
-                                </a>
-                                <div class="viewsCount" style="color: #9d9d9d;">3.2K lượt xem</div>
-                                <div style="float: left;">
-                                    <span class="user-rate-image post-large-rate stars-large-vang"
-                                        style="display: block;/* width: 100%; */">
-                                        <span style="width: 0%"></span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="item post-37176">
-                                <a href="chitiet.php" title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ">
-                                    <div class="item-link">
-                                        <img src="https://ghienphim.org/uploads/GPax0JpZbqvIVyfkmDwhRCKATNtLloFQ.jpeg?v=1624801798"
-                                            class="lazy post-thumb" alt="CHỊ MƯỜI BA: BA NGÀY SINH TỬ"
-                                            title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ" />
-                                        <span class="is_trailer">Trailer</span>
-                                    </div>
-                                    <p class="title">CHỊ MƯỜI BA: BA NGÀY SINH TỬ</p>
-                                </a>
-                                <div class="viewsCount" style="color: #9d9d9d;">3.2K lượt xem</div>
-                                <div style="float: left;">
-                                    <span class="user-rate-image post-large-rate stars-large-vang"
-                                        style="display: block;/* width: 100%; */">
-                                        <span style="width: 0%"></span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="item post-37176">
-                                <a href="chitiet.php" title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ">
-                                    <div class="item-link">
-                                        <img src="https://ghienphim.org/uploads/GPax0JpZbqvIVyfkmDwhRCKATNtLloFQ.jpeg?v=1624801798"
-                                            class="lazy post-thumb" alt="CHỊ MƯỜI BA: BA NGÀY SINH TỬ"
-                                            title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ" />
-                                        <span class="is_trailer">Trailer</span>
-                                    </div>
-                                    <p class="title">CHỊ MƯỜI BA: BA NGÀY SINH TỬ</p>
-                                </a>
-                                <div class="viewsCount" style="color: #9d9d9d;">3.2K lượt xem</div>
-                                <div style="float: left;">
-                                    <span class="user-rate-image post-large-rate stars-large-vang"
-                                        style="display: block;/* width: 100%; */">
-                                        <span style="width: 0%"></span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="item post-37176">
-                                <a href="chitiet.php" title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ">
-                                    <div class="item-link">
-                                        <img src="https://ghienphim.org/uploads/GPax0JpZbqvIVyfkmDwhRCKATNtLloFQ.jpeg?v=1624801798"
-                                            class="lazy post-thumb" alt="CHỊ MƯỜI BA: BA NGÀY SINH TỬ"
-                                            title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ" />
-                                        <span class="is_trailer">Trailer</span>
-                                    </div>
-                                    <p class="title">CHỊ MƯỜI BA: BA NGÀY SINH TỬ</p>
-                                </a>
-                                <div class="viewsCount" style="color: #9d9d9d;">3.2K lượt xem</div>
-                                <div style="float: left;">
-                                    <span class="user-rate-image post-large-rate stars-large-vang"
-                                        style="display: block;/* width: 100%; */">
-                                        <span style="width: 0%"></span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="item post-37176">
-                                <a href="chitiet.php" title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ">
-                                    <div class="item-link">
-                                        <img src="https://ghienphim.org/uploads/GPax0JpZbqvIVyfkmDwhRCKATNtLloFQ.jpeg?v=1624801798"
-                                            class="lazy post-thumb" alt="CHỊ MƯỜI BA: BA NGÀY SINH TỬ"
-                                            title="CHỊ MƯỜI BA: BA NGÀY SINH TỬ" />
-                                        <span class="is_trailer">Trailer</span>
-                                    </div>
-                                    <p class="title">CHỊ MƯỜI BA: BA NGÀY SINH TỬ</p>
-                                </a>
-                                <div class="viewsCount" style="color: #9d9d9d;">3.2K lượt xem</div>
-                                <div style="float: left;">
-                                    <span class="user-rate-image post-large-rate stars-large-vang"
-                                        style="display: block;/* width: 100%; */">
-                                        <span style="width: 0%"></span>
-                                    </span>
-                                </div>
-                            </div>
+        @include('pages.includes.sidebar')
 
-
-                        </div>
-                    </div>
-                </section>
-                <div class="clearfix"></div>
-            </div>
-        </aside>
     </div>
 @endsection

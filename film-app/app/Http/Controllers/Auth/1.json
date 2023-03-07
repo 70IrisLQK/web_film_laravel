@@ -1,0 +1,82 @@
+{
+  "status": true,
+  "msg": "",
+  "movie": {
+    "created": {
+      "time": "2023-03-03T23:39:28.000Z"
+    },
+    "modified": {
+      "time": "2023-03-03T23:39:35.000Z"
+    },
+    "_id": "640222c068c26150c04bbe89",
+    "name": "Kẻ Đào Tẩu Giấc Mơ",
+    "slug": "ke-dao-tau-giac-mo",
+    "origin_name": "Coma",
+    "content": "Một kiến trúc sư trẻ tài năng tỉnh dậy sau một tai nạn kinh hoàng và phát hiện rằng anh ta đang lạc trong một thế giới khác kỳ lạ và hỗn loạn. Thế giới đó được gọi là COMA và ở đó những toà nhà, những dòng sông và thành phố đều có thể tồn tại trong cùng một không gian của một căn phòng. Những định luật vật lý anh được học không còn đúng ở thế giới này và bên cạnh việc thích nghi, anh ta còn phải chiến đấu để bảo vệ mạng sống của mình cũng như tìm cách để thoát ra, trở về với thế giới thực.",
+    "type": "single",
+    "status": "completed",
+    "thumb_url": "https://img.hiephanhthienha.com/uploads/movies/ke-dao-tau-giac-mo-thumb.jpg",
+    "poster_url": "https://img.hiephanhthienha.com/uploads/movies/ke-dao-tau-giac-mo-poster.jpg",
+    "is_copyright": false,
+    "sub_docquyen": false,
+    "chieurap": false,
+    "trailer_url": "",
+    "time": "111 Phút",
+    "episode_current": "Full",
+    "episode_total": "1",
+    "quality": "HD",
+    "lang": "Vietsub",
+    "notify": "",
+    "showtimes": "",
+    "year": 2019,
+    "view": 1,
+    "actor": [
+      "Rinal Mukhametov",
+      "Anton Pampushnyy",
+      "Lyubov Aksyonova",
+      "Milos Bikovic",
+      "Konstantin Lavronenko"
+    ],
+    "director": [
+      "Nikita Argunov"
+    ],
+    "category": [
+      {
+        "id": "620a21b2e0fc277084dfd0c5",
+        "name": "Hành Động",
+        "slug": "hanh-dong"
+      },
+      {
+        "id": "620a2282e0fc277084dfd435",
+        "name": "Viễn Tưởng",
+        "slug": "vien-tuong"
+      },
+      {
+        "id": "620a2293e0fc277084dfd489",
+        "name": "Phiêu Lưu",
+        "slug": "phieu-luu"
+      }
+    ],
+    "country": [
+      {
+        "id": "62121edd1f1609c9d9345940",
+        "name": "Nga",
+        "slug": "nga"
+      }
+    ]
+  },
+  "episodes": [
+    {
+      "server_name": "Vietsub #1",
+      "server_data": [
+        {
+          "name": "Full",
+          "slug": "full",
+          "filename": "Coma - 2019",
+          "link_embed": "https://kd.hd-bophim.com/share/b95bf54ce804d41aabbf739a9ed7bb5f",
+          "link_m3u8": "https://kd.hd-bophim.com/20230303/33285_8fbd49f5/index.m3u8"
+        }
+      ]
+    }
+  ]
+}

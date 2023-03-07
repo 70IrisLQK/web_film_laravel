@@ -17,7 +17,7 @@ class CreateRatingsTable extends Migration
             $table->id();
             $table->Integer('rating');
             $table->string('ip_address');
-            $table->foreignId('movie_id');
+            $table->string('movie_id');
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
             $table->timestamps();
         });

@@ -6,6 +6,7 @@ use App\Models\Episode;
 use App\Models\Movie;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class EpisodeController extends Controller
 {
@@ -16,7 +17,10 @@ class EpisodeController extends Controller
      */
     public function index()
     {
-        //
+        $listMovies = Movie::orderBy('id', 'DESC')->pluck('title', 'id');
+        $listEpisodes = Episode::with('movie')->orderBy('id', 'DESC')->paginate(10);
+
+        return view('admin.episode.index', compact('listMovies', 'listEpisodes'));
     }
 
     /**
@@ -27,9 +31,7 @@ class EpisodeController extends Controller
     public function create()
     {
         $listMovies = Movie::orderBy('id', 'DESC')->pluck('title', 'id');
-        $listEpisodes = Episode::with('movie')->orderBy('id', 'DESC')->get();
-
-        return view('admin.episode.form', compact('listMovies', 'listEpisodes'));
+        return view('admin.episode.form', compact('listMovies'));
     }
 
     /**
@@ -49,6 +51,7 @@ class EpisodeController extends Controller
         } else {
 
             $newEpisode = new Episode();
+            $newEpisode->id = Str::random(24);
             $newEpisode->movie_id = $data['movie_id'];
             $newEpisode->link = $data['link'];
             $newEpisode->episode = $data['episode'];
@@ -57,7 +60,7 @@ class EpisodeController extends Controller
             $newEpisode->save();
         }
 
-
+        toastr()->success('Data has been saved successfully!', 'Congrats');
         return redirect()->back();
     }
 
@@ -103,6 +106,7 @@ class EpisodeController extends Controller
         $updateEpisode->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $updateEpisode->save();
+        toastr()->success('Data has been updated successfully!', 'Congrats');
         return redirect()->back();
     }
 
@@ -115,6 +119,7 @@ class EpisodeController extends Controller
     public function destroy($id)
     {
         Episode::find($id)->delete();
+        toastr()->success('Data has been deleted successfully!', 'Congrats');
         return redirect()->back();
     }
 
@@ -124,12 +129,14 @@ class EpisodeController extends Controller
         $listMovieById = Movie::find($movieId);
         $output = '<option>Choose Episode</option>';
 
-        if ($listMovieById->belong_movie == 'Phim bộ') {
-            for ($i = 1; $i <= $listMovieById->episode; $i++) {
+        if ($listMovieById->type == 1) {
+            for ($i = 1; $i <= $listMovieById->episode_total; $i++) {
                 $output .= '<option value="' . $i . '">' . $i . '</option>';
             }
         } else {
-            $output .= '<option value="HD">HD</option> <option>Full HD</option>';
+            $output .= '<option value="CAM">CAM</option>
+            <option value="SD">SD</option> 
+            <option value="HD">HD</option><option value="Full HD">HD</option>';
         }
         echo $output;
     }

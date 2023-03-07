@@ -45,20 +45,14 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Status</label>
-                            <select class="form-control" aria-label="Default select example" name="status">
-                                @if (isset($listCountryById))
-                                    @if ($listCountryById->status == 0)
-                                        <option value="0" selected>Inactive</option>
-                                        <option value="1">Active</option>
-                                    @else
-                                        <option value="0">Inactive</option>
-                                        <option value="1" selected>Active</option>
-                                    @endif
-                                @else
-                                    <option value="0" selected>Inactive</option>
-                                    <option value="1">Active</option>
-                                @endif
-                            </select>
+                            {!! Form::select(
+                                'status',
+                                ['0' => 'inactive', '1' => 'active'],
+                                isset($listCountryById) ? $listCountryById->status : '',
+                                [
+                                    'class' => 'form-control',
+                                ],
+                            ) !!}
                         </div>
                         <button type="submit" class="btn btn-info">Submit</button>
                         </form>

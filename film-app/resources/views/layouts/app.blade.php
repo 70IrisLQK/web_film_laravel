@@ -175,6 +175,7 @@
     <script>
         $('.select-movie').change(function() {
             var id = $(this).find(':selected').val();
+            alert(id);
             $.ajax({
                 url: "{{ route('select-movie') }}",
                 data: {

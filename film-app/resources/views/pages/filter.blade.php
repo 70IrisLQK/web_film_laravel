@@ -24,35 +24,55 @@
                     @foreach ($listMovies as $movie)
                         <article class="col-md-3 col-sm-3 col-xs-6 thumb grid-item post-37606">
                             <div class="halim-item">
-                                <a class="halim-thumb" href="{{ route('movies', $movie->slug) }}">
-                                    <figure><img class="lazy img-responsive"
-                                            src="{{ asset('uploads/movies/' . $movie->image) }}" alt="{{ $movie->title }}"
-                                            title="{{ $movie->title }}">
+                                <a class="halim-thumb" href="{{ route('phim', $movie->slug) }}">
+                                    <figure>
+                                        @if (empty($movie->image))
+                                            <img class="lazy img-responsive" src="{{ $movie->link_image }}"
+                                                alt="{{ $movie->title }}" title="{{ $movie->title }}">
+                                        @else
+                                            <img class="lazy img-responsive"
+                                                src="{{ asset('uploads/movies/' . $movie->image) }}"
+                                                alt="{{ $movie->title }}" title="{{ $movie->title }}">
+                                        @endif
+
                                     </figure>
                                     <span class="status">
-                                        @if ($movie->belong_movie == 'Phim bộ')
-                                            @if ($movie->start_episode != $movie->episode)
-                                                Đang chiếu {{ $movie->start_episode }}/{{ $movie->episode }} tập
-                                            @else
-                                                Hoàn tất {{ $movie->start_episode }}/{{ $movie->episode }} tập
-                                            @endif
+                                        @if ($movie->type == 2 && strcmp($movie->episode_total, '1') !== 0)
+                                            {{ $movie->episodes_count . '/' . $movie->episode_total }}
                                         @else
-                                            <td>
-                                                @if ($movie->resolution == 0)
+                                            @if ($movie->type == 3)
+                                                {{ $movie->episodes_count . '/' . $movie->episode_total }}
+                                            @elseif ($movie->quality && $movie->type != 1)
+                                                @if ($movie->quality == 0)
+                                                    CAM
+                                                @elseif($movie->quality == 1)
                                                     SD
-                                                @else
-                                                    FULL HD
+                                                @elseif($movie->quality == 2)
+                                                    HD
+                                                @elseif($movie->quality == 3)
+                                                    Full HD
                                                 @endif
-                                            </td>
+                                            @elseif ($movie->type == 2)
+                                                @if ($movie->quality == 0)
+                                                    CAM
+                                                @elseif($movie->quality == 1)
+                                                    SD
+                                                @elseif($movie->quality == 2)
+                                                    HD
+                                                @elseif($movie->quality == 3)
+                                                    Full HD
+                                                @endif
+                                            @else
+                                                {{ $movie->episodes_count . '/' . $movie->episode_total }}
+                                            @endif
                                         @endif
-
-                                    </span><span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
-                                        @if ($movie->subtitle == 0)
-                                            Thuyết minh
+                                    </span>
+                                    <span class="episode"><i class="fa fa-play" aria-hidden="true"></i>
+                                        @if ($movie->lang == 0)
+                                            Vietsub
                                         @else
-                                            Việt Sub
+                                            Thuyết minh
                                         @endif
-
                                     </span>
                                     <div class="icon_overlay"></div>
                                     <div class="halim-post-title-box">
@@ -68,10 +88,10 @@
                 </div>
                 <div class="clearfix"></div>
                 <div class="text-center">
-                    {{-- {!! $listMovies->links() !!} --}}
+                    {!! $listMovies->links() !!}
                 </div>
             </section>
         </main>
-        {{-- @include('pages.includes.sidebar') --}}
+        @include('pages.includes.sidebar')
     </div>
 @endsection

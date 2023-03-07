@@ -5609,3 +5609,42 @@ ul.list-info-group {
     text-transform: uppercase;
     font-size: 13px;
 }
+.more-movie {
+    position: absolute;
+    right: 0;
+    font-weight: 400;
+    line-height: 21px;
+    text-transform: uppercase;
+    padding-left: 10px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 20px;
+}
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    color: #fff;
+    background-color: #5d5d5d;
+    font-weight: bold;
+    font-size: 13px;
+    border-radius: 0;
+}
+
+li.nav-item a:hover {
+    background: #333;
+    border-radius: 0;
+}
+li.nav-item a {
+    color: aliceblue;
+}
+.fa-search {
+    content: "\f002";
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    font-size: 20px;
+    color: #666666;
+}
+ul.list-info-group {
+    height: 360px;
+}

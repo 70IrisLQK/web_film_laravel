@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Country;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CountryController extends Controller
 {
@@ -54,6 +55,7 @@ class CountryController extends Controller
         ]);
 
         $newCountry = new Country();
+        $newCountry->id = Str::random(24);
         $newCountry->title = $data['title'];
         $newCountry->slug = $data['slug'];
         $newCountry->description = $data['description'];
@@ -137,5 +139,14 @@ class CountryController extends Controller
         Country::find($id)->delete();
         toastr()->success('Data has been deleted successfully!', 'Congrats');
         return redirect()->back();
+    }
+
+    public function countryStatus(Request $request)
+    {
+        $data = $request->all();
+        $getCountryById = Country::where('id', $data['countryId'])->first();
+        $getCountryById->status = $data['countryStatus'];
+
+        $getCountryById->save();
     }
 }

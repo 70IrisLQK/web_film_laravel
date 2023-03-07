@@ -23,7 +23,7 @@
                     @foreach ($listMovieBySearch as $movie)
                         <article class="col-md-3 col-sm-3 col-xs-6 thumb grid-item post-37606">
                             <div class="halim-item">
-                                <a class="halim-thumb" href="{{ route('movies', $movie->slug) }}">
+                                <a class="halim-thumb" href="{{ route('phim', $movie->slug) }}">
                                     <figure><img class="lazy img-responsive"
                                             src="{{ asset('uploads/movies/' . $movie->image) }}" alt="{{ $movie->title }}"
                                             title="{{ $movie->title }}">

@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Episode extends Model
 {
-    public $timestamps = false;
     use HasFactory;
+
+    public $timestamps = false;
+    public $incrementing = false;
 
     public function movie()
     {

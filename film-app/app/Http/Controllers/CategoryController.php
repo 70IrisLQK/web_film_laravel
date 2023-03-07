@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -54,6 +55,7 @@ class CategoryController extends Controller
         ]);
 
         $newCategory = new Category();
+        $newCategory->id = Str::random(24);
         $newCategory->title = $data['title'];
         $newCategory->slug = $data['slug'];
         $newCategory->description = $data['description'];
@@ -152,5 +154,14 @@ class CategoryController extends Controller
             $category->position = $key;
             $category->save();
         }
+    }
+
+    public function categoryStatus(Request $request)
+    {
+        $data = $request->all();
+        $getCategoryById = Category::where('id', $data['categoryId'])->first();
+        $getCategoryById->status = $data['categoryStatus'];
+
+        $getCategoryById->save();
     }
 }

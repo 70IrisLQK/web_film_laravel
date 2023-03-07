@@ -1,0 +1,111 @@
+{
+  "status": true,
+  "msg": "",
+  "movie": {
+    "created": {
+      "time": "2023-02-18T14:36:53.000Z"
+    },
+    "modified": {
+      "time": "2023-03-04T13:20:34.000Z"
+    },
+    "_id": "63f080157f562c619bac524a",
+    "name": "Ẩn Danh 2",
+    "origin_name": "Taxi Driver 2",
+    "content": "<p><i><strong>Chuyển thể từ webtoon nổi tiếng Red Cage, Ẩn danh (Taxi Driver) là một trong các tác phẩm ăn khách của màn ảnh nhỏ Hàn Quốc năm 2021. Phim xoay quanh một hãng taxi bí ẩn mang tên Rainbow Taxi (Taxi Cầu Vồng). Vẻ ngoài là dịch vụ vận chuyển, đây thực chất là một đội ngũ thực thi công lý, mang mục tiêu thay các khách hàng trả thù khi họ không giành được công bằng trước pháp luật.</strong></i></p>",
+    "type": "series",
+    "status": "ongoing",
+    "thumb_url": "https://img.hiephanhthienha.com/uploads/movies/an-danh-2-thumb.jpg",
+    "poster_url": "https://img.hiephanhthienha.com/uploads/movies/an-danh-2-poster.jpg",
+    "is_copyright": false,
+    "sub_docquyen": true,
+    "chieurap": false,
+    "trailer_url": "",
+    "time": "60 phút/tập",
+    "episode_current": "Tập 5",
+    "episode_total": "16",
+    "quality": "Full HD",
+    "lang": "Vietsub",
+    "notify": "",
+    "showtimes": "",
+    "slug": "an-danh-2",
+    "year": 2023,
+    "view": 277,
+    "actor": [
+      "Lee Je-Hoon",
+      "Kim Eui-Sung",
+      "Pyo Ye-Jin",
+      "Jang Hyuk-Jin",
+      "Bae Yoo-Ram",
+      "Shin Jae-Ha"
+    ],
+    "director": [
+      "Lee Dan"
+    ],
+    "category": [
+      {
+        "id": "620a21b2e0fc277084dfd0c5",
+        "name": "Hành Động",
+        "slug": "hanh-dong"
+      },
+      {
+        "id": "620a2238e0fc277084dfd291",
+        "name": "Tâm Lý",
+        "slug": "tam-ly"
+      },
+      {
+        "id": "620a22ace0fc277084dfd531",
+        "name": "Kinh Dị",
+        "slug": "kinh-di"
+      }
+    ],
+    "country": [
+      {
+        "id": "620a2300e0fc277084dfd6d2",
+        "name": "Hàn Quốc",
+        "slug": "han-quoc"
+      }
+    ]
+  },
+  "episodes": [
+    {
+      "server_name": "Vietsub #1",
+      "server_data": [
+        {
+          "name": "1",
+          "slug": "1",
+          "filename": "Taxi Driver S2E01",
+          "link_embed": "https://kd.hd-bophim.com/share/5557894d1bf9584f4087404f6a84866d",
+          "link_m3u8": "https://kd.hd-bophim.com/20230220/32435_4bdc19fa/index.m3u8"
+        },
+        {
+          "name": "2",
+          "slug": "2",
+          "filename": "Taxi Driver S2E02",
+          "link_embed": "https://kd.hd-bophim.com/share/6c777229ea7df5098a0a57a29558ed31",
+          "link_m3u8": "https://kd.hd-bophim.com/20230220/32436_138ea1e4/index.m3u8"
+        },
+        {
+          "name": "3",
+          "slug": "3",
+          "filename": "Taxi Driver S02E03",
+          "link_embed": "https://hd.hdbophim.com/share/053ae68fd17dc2a557d3193855f3773e",
+          "link_m3u8": "https://hd.hdbophim.com/20230226/32224_28aaba35/index.m3u8"
+        },
+        {
+          "name": "4",
+          "slug": "4",
+          "filename": "Taxi Driver S02E04",
+          "link_embed": "https://hd.hdbophim.com/share/535464f977a45ab62af2578604d3f9f2",
+          "link_m3u8": "https://hd.hdbophim.com/20230226/32201_5c2eb41b/index.m3u8"
+        },
+        {
+          "name": "5",
+          "slug": "5",
+          "filename": "Taxi Driver S02E05",
+          "link_embed": "https://hd.hdbophim.com/share/7f91d39bc9175aa9a5ab21f76159ff3d",
+          "link_m3u8": "https://hd.hdbophim.com/20230304/32606_47e4e7ce/index.m3u8"
+        }
+      ]
+    }
+  ]
+}

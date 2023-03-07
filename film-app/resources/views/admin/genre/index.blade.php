@@ -42,11 +42,10 @@
                                     <td><span class="text-ellipsis">{{ $genre->slug }}</span></td>
                                     <td><span class="text-ellipsis">{{ $genre->description }}</span></td>
                                     <td><span class="text-ellipsis">
-                                            @if ($genre->status == 1)
-                                                ACTIVE
-                                            @else
-                                                INACTIVE
-                                            @endif
+                                            {!! Form::select('status', ['0' => 'inactive', '1' => 'active'], isset($genre) ? $genre->status : '', [
+                                                'class' => 'form-control choose_genre_status',
+                                                'id' => $genre->id,
+                                            ]) !!}
                                         </span></td>
                                     <td><span class="text-ellipsis">{{ $genre->created_at }}</span></td>
                                     <td><span class="text-ellipsis">{{ $genre->updated_at }}</span></td>

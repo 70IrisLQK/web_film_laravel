@@ -42,11 +42,10 @@
                                     <td><span class="text-ellipsis">{{ $country->slug }}</span></td>
                                     <td><span class="text-ellipsis">{{ $country->description }}</span></td>
                                     <td><span class="text-ellipsis">
-                                            @if ($country->status == 1)
-                                                ACTIVE
-                                            @else
-                                                INACTIVE
-                                            @endif
+                                            {!! Form::select('status', ['0' => 'inactive', '1' => 'active'], isset($country) ? $country->status : '', [
+                                                'class' => 'form-control choose_country_status',
+                                                'id' => $country->id,
+                                            ]) !!}
                                         </span></td>
                                     <td><span class="text-ellipsis">{{ $country->created_at }}</span></td>
                                     <td><span class="text-ellipsis">{{ $country->updated_at }}</span></td>

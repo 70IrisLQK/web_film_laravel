@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Genre;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class GenreController extends Controller
 {
@@ -54,6 +55,7 @@ class GenreController extends Controller
         ]);
 
         $newGenre = new Genre();
+        $newGenre->id = Str::random(24);
         $newGenre->title = $data['title'];
         $newGenre->slug = $data['slug'];
         $newGenre->description = $data['description'];
@@ -62,6 +64,7 @@ class GenreController extends Controller
         $newGenre->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $newGenre->save();
+        toastr()->success('Data has been saved successfully!', 'Congrats');
         return redirect()->back();
     }
 
@@ -121,6 +124,7 @@ class GenreController extends Controller
         $updateGenre->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
 
         $updateGenre->save();
+        toastr()->success('Data has been updated successfully!', 'Congrats');
         return redirect()->back();
     }
 
@@ -133,6 +137,16 @@ class GenreController extends Controller
     public function destroy($id)
     {
         Genre::find($id)->delete();
+        toastr()->success('Data has been deleted successfully!', 'Congrats');
         return redirect()->back();
+    }
+
+    public function genreStatus(Request $request)
+    {
+        $data = $request->all();
+        $getGenreById = Genre::where('id', $data['genreId'])->first();
+        $getGenreById->status = $data['genreStatus'];
+
+        $getGenreById->save();
     }
 }

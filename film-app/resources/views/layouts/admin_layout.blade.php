@@ -303,6 +303,259 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
         })
     </script>
+    <script>
+        $('.select-topview').change(function() {
+            var topView = $(this).find(':selected').val();
+            var movieId = $(this).attr('id');
+            if (topView == 0) {
+                var text = 'Ngày'
+            } else if (topView == 1) {
+                var text = 'Tuần'
+            } else {
+                var text = 'Tháng'
+            }
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('select-top-view') }}",
+                data: {
+                    topView: topView,
+                    id: movieId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Select topview ${text} success`)
+                }
+            });
+
+        })
+    </script>
+    <script>
+        $('.category_choose').change(function() {
+            var categoryId = $(this).val();
+            var movieId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('category-choose') }}",
+                data: {
+                    categoryId: categoryId,
+                    movieId: movieId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Update category success.`)
+                }
+            });
+
+        })
+    </script>
+    <script>
+        $('.country_choose').change(function() {
+            var countryId = $(this).val();
+            var movieId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('country-choose') }}",
+                data: {
+                    countryId: countryId,
+                    movieId: movieId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Update country success.`)
+                }
+            });
+
+        })
+    </script>
+    <script>
+        $('.status_choose').change(function() {
+            var status = $(this).val();
+            var movieId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('status-choose') }}",
+                data: {
+                    status: status,
+                    movieId: movieId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Update status success.`)
+                }
+            });
+
+        })
+    </script>
+    <script>
+        $('.resolution_choose').change(function() {
+            var resolution = $(this).val();
+            var movieId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('resolution-choose') }}",
+                data: {
+                    resolution: resolution,
+                    movieId: movieId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Update resolution success.`)
+                }
+            });
+
+        })
+    </script>
+    <script>
+        $('.hot_choose').change(function() {
+            var hot = $(this).val();
+            var movieId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('hot-choose') }}",
+                data: {
+                    hot: hot,
+                    movieId: movieId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Update hot success.`)
+                }
+            });
+
+        })
+    </script>
+    <script>
+        $('.subtitle_choose').change(function() {
+            var subtitle = $(this).val();
+            var movieId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('subtitle-choose') }}",
+                data: {
+                    subtitle: subtitle,
+                    movieId: movieId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Update subtitle success.`)
+                }
+            });
+
+        })
+    </script>
+    <script>
+        $('.belong_movie_choose').change(function() {
+            var belongMovie = $(this).val();
+            var movieId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('belong-movie-choose') }}",
+                data: {
+                    belongMovie: belongMovie,
+                    movieId: movieId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Update belong movie success.`)
+                }
+            });
+
+        })
+    </script>
+    <script>
+        $('.select-movie').change(function() {
+            var id = $(this).find(':selected').val();
+            $.ajax({
+                url: "{{ route('select-movie') }}",
+                data: {
+                    movieId: id
+                },
+                type: 'GET',
+                success: function(data) {
+                    $('#show-movie').html(data);
+                }
+            });
+        })
+    </script>
+    <script>
+        $('.choose_category_status').change(function() {
+            var categoryStatus = $(this).val();
+            var categoryId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('category_status') }}",
+                data: {
+                    categoryStatus: categoryStatus,
+                    categoryId: categoryId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Update status category success.`)
+                }
+            });
+
+        })
+    </script>
+    <script>
+        $('.choose_country_status').change(function() {
+            var countryStatus = $(this).val();
+            var countryId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('country_status') }}",
+                data: {
+                    countryStatus: countryStatus,
+                    countryId: countryId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Update status country success.`)
+                }
+            });
+
+        })
+    </script>
+    <script>
+        $('.choose_genre_status').change(function() {
+            var genreStatus = $(this).val();
+            var genreId = $(this).attr('id');
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('genre_status') }}",
+                data: {
+                    genreStatus: genreStatus,
+                    genreId: genreId,
+                },
+                type: 'POST',
+                success: function(data) {
+                    alert(`Update status genre success.`)
+                }
+            });
+
+        })
+    </script>
     <!-- //calendar -->
 </body>
 

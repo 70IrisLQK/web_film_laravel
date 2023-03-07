@@ -72,8 +72,7 @@
                                     <div class="input-group col-xs-12">
                                         <input id="search" type="text" name="search" class="form-control"
                                             placeholder="Tìm kiếm phim..." autocomplete="off" required>
-                                        <i class="animate-spin hl-spin4 hidden"></i>
-                                        <button>Tìm kiếm</button>
+                                        <i class="fa fa-search" onclick="$('#form_search').submit();"></i>
                                     </div>
                                 </div>
                             </form>
@@ -111,10 +110,7 @@
                         Bookmarks<i class="hl-bookmark" aria-hidden="true"></i>
                         <span class="count">0</span>
                     </button>
-                    <button type="button" class="navbar-toggle collapsed pull-right get-locphim-on-mobile">
-                        <a href="javascript:;" id="expand-ajax-filter" style="color: #ffed4d;">Lọc <i
-                                class="fas fa-filter"></i></a>
-                    </button>
+
                 </div>
                 <div class="collapse navbar-collapse" id="halim">
                     <div class="menu-menu_1-container">
@@ -124,15 +120,15 @@
                             </li>
                             @foreach ($listCategories as $category)
                                 <li class="mega"><a title="{{ $category->title }}"
-                                        href="{{ route('categories', $category->slug) }}">{{ $category->title }}</a>
+                                        href="{{ route('loai-phim', [$category->slug]) }}">{{ $category->title }}</a>
                                 </li>
                             @endforeach
                             <li class="mega dropdown">
                                 <a title="Năm" href="#" data-toggle="dropdown" class="dropdown-toggle"
                                     aria-haspopup="true">Năm <span class="caret"></span></a>
                                 <ul role="menu" class=" dropdown-menu">
-                                    @for ($i = 2020; $i <= 2023; $i++)
-                                        <li><a title="Phim {{ $i }}" href="{{ url('year/' . $i) }}">Phim
+                                    @for ($i = 2010; $i <= 2023; $i++)
+                                        <li><a title="Phim {{ $i }}" href="{{ url('nam/' . $i) }}">Phim
                                                 {{ $i }}</a></li>
                                     @endfor
 
@@ -144,7 +140,7 @@
                                 <ul role="menu" class=" dropdown-menu">
                                     @foreach ($listGenres as $genre)
                                         <li><a title="{{ $genre->title }}"
-                                                href="{{ route('genres', $genre->slug) }}">{{ $genre->title }}</a>
+                                                href="{{ route('the-loai', $genre->slug) }}">{{ $genre->title }}</a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -155,7 +151,7 @@
                                 <ul role="menu" class=" dropdown-menu">
                                     @foreach ($listCountries as $country)
                                         <li><a title="{{ $country->title }}"
-                                                href="{{ route('countries', $country->slug) }}">{{ $country->title }}</a>
+                                                href="{{ route('quoc-gia', $country->slug) }}">{{ $country->title }}</a>
                                         </li>
                                     @endforeach
 
@@ -163,9 +159,6 @@
                             </li>
                         </ul>
                     </div>
-                    <ul class="nav navbar-nav navbar-left" style="background:#000;">
-                        <li><a href="#" onclick="locphim()" style="color: #ffed4d;">Lọc Phim</a></li>
-                    </ul>
                 </div>
             </nav>
             <div class="collapse navbar-collapse" id="search-form">
@@ -305,9 +298,59 @@
             });
         });
     </script>
+    <script>
+        function onpenTab(tabName) {
+            var i;
+            var x = document.getElementByClassName('tab');
+            alert(x)
+            for (let index = 0; index < array.length; index++) {
+                x[i].style.display = 'none'
+            }
+            document.getElementById(tabName).style.display = 'block';
+        }
+    </script>
+    <script text="text/javascript">
+        $(document).ready(function() {
+            $.ajax({
+                url: '{{ url('/filter-top-view-default') }}',
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    $('#show_data_default').html(data);
+                }
+            })
+        })
+
+        $('.filter-sidebar').click(function() {
+            var href = $(this).attr('href');
+            if (href == '#day') {
+                var value = 0;
+            } else if (href == '#week') {
+                var value = 1;
+            } else {
+                var value = 2;
+            }
+            $.ajax({
+                url: '{{ url('/filter-top-view') }}',
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    value: value,
+                },
+                success: function(data) {
+                    $('#halim-ajax-popular-post-default').css('display', 'none');
+                    $('#show_data').html(data);
+                }
+            })
+        })
+    </script>
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0"
-        nonce="JLHSHesM"></script>
+        nonce="pLwuyQuN"></script>
     <style>
         #overlay_mb {
             position: fixed;

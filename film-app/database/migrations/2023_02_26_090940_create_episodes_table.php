@@ -15,9 +15,13 @@ class CreateEpisodesTable extends Migration
     {
         Schema::create('episodes', function (Blueprint $table) {
             $table->id();
-            $table->string('link');
-            $table->string('episode');
-            $table->foreignId('movie_id');
+            $table->string('server_name');
+            $table->string('name');
+            $table->string('slug');
+            $table->string('filename');
+            $table->text('link_embed');
+            $table->text('link_m3u8');
+            $table->string('movie_id');
             $table->foreign('movie_id')->references('id')->on('movies')->onDelete('cascade');
             $table->timestamps();
         });

@@ -23,7 +23,10 @@
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen></iframe>
-
+                    <video class="art-video" preload="metadata" autoplay="" playsinline=""
+                        src="blob:https://vie.haiphim.com/63394b78-5caa-4b6a-9eab-8099efcf2098">
+                        <track default="" kind="metadata" src="">
+                    </video>
                     <div class="button-watch">
                         <ul class="halim-social-plugin col-xs-4 hidden-xs">
                             <li class="fb-like" data-href="" data-layout="button_count" data-action="like"

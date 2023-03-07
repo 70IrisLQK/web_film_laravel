@@ -35,6 +35,7 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             @foreach ($listCategories as $key => $category)
                                 <tr>
                                     <td><span class="text-ellipsis">{{ $key + 1 }}</span></td>
@@ -42,15 +43,15 @@
                                     <td><span class="text-ellipsis">{{ $category->slug }}</span></td>
                                     <td><span class="text-ellipsis">{{ $category->description }}</span></td>
                                     <td><span class="text-ellipsis">
-                                            @if ($category->status == 1)
-                                                ACTIVE
-                                            @else
-                                                INACTIVE
-                                            @endif
+                                            {!! Form::select('status', ['0' => 'inactive', '1' => 'active'], isset($category) ? $category->status : '', [
+                                                'class' => 'form-control choose_category_status',
+                                                'id' => $category->id,
+                                            ]) !!}
                                         </span></td>
                                     <td><span class="text-ellipsis">{{ $category->created_at }}</span></td>
                                     <td><span class="text-ellipsis">{{ $category->updated_at }}</span></td>
                                     <td>
+
                                         <a href="{{ route('category.edit', [$category->id]) }}" class="active"
                                             ui-toggle-class=""><i class="fa fa-edit text-success text"></i>
                                         </a>
